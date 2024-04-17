@@ -1,0 +1,491 @@
+CREATE TRIGGER [20118018].trg_AspNetRoleClaims_Insert
+ON [20118018].AspNetRoleClaims
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('AspNetRoleClaims', 'INSERT', GETDATE());
+END;
+GO
+
+CREATE TRIGGER [20118018].trg_AspNetRoleClaims_Update
+ON [20118018].AspNetRoleClaims
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('AspNetRoleClaims', 'UPDATE', GETDATE());
+END;
+GO
+
+CREATE TRIGGER [20118018].trg_AspNetRoleClaims_Delete
+ON [20118018].AspNetRoleClaims
+AFTER DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('AspNetRoleClaims', 'DELETE', GETDATE());
+END;
+GO
+
+CREATE TRIGGER [20118018].trg_AspNetRoles_Insert
+ON [20118018].AspNetRoles
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('AspNetRoles', 'INSERT', GETDATE());
+END;
+GO
+
+CREATE TRIGGER [20118018].trg_AspNetRoles_Update
+ON [20118018].AspNetRoles
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('AspNetRoles', 'UPDATE', GETDATE());
+END;
+GO
+
+CREATE TRIGGER [20118018].trg_AspNetRoles_Delete
+ON [20118018].AspNetRoles
+AFTER DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('AspNetRoles', 'DELETE', GETDATE());
+END;
+GO
+
+CREATE TRIGGER [20118018].trg_AspNetUserClaims_Insert
+ON [20118018].AspNetUserClaims
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('AspNetUserClaims', 'INSERT', GETDATE());
+END;
+GO
+
+CREATE TRIGGER [20118018].trg_AspNetUserClaims_Update
+ON [20118018].AspNetUserClaims
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('AspNetUserClaims', 'UPDATE', GETDATE());
+END;
+GO
+
+CREATE TRIGGER [20118018].trg_AspNetUserClaims_Delete
+ON [20118018].AspNetUserClaims
+AFTER DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('AspNetUserClaims', 'DELETE', GETDATE());
+END;
+GO
+
+CREATE TRIGGER [20118018].trg_AspNetUserLogins_Insert
+ON [20118018].AspNetUserLogins
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('AspNetUserLogins', 'INSERT', GETDATE());
+END;
+GO
+
+CREATE TRIGGER [20118018].trg_AspNetUserLogins_Update
+ON [20118018].AspNetUserLogins
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('AspNetUserLogins', 'UPDATE', GETDATE());
+END;
+GO
+
+CREATE TRIGGER [20118018].trg_AspNetUserLogins_Delete
+ON [20118018].AspNetUserLogins
+AFTER DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('AspNetUserLogins', 'DELETE', GETDATE());
+END;
+GO
+
+CREATE TRIGGER [20118018].trg_AspNetUserRoles_Insert
+ON [20118018].AspNetUserRoles
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('AspNetUserRoles', 'INSERT', GETDATE());
+END;
+GO
+
+CREATE TRIGGER [20118018].trg_AspNetUserRoles_Update
+ON [20118018].AspNetUserRoles
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('AspNetUserRoles', 'UPDATE', GETDATE());
+END;
+GO
+
+CREATE TRIGGER [20118018].trg_AspNetUserRoles_Delete
+ON [20118018].AspNetUserRoles
+AFTER DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('AspNetUserRoles', 'DELETE', GETDATE());
+END;
+GO
+
+CREATE TRIGGER [20118018].trg_AspNetUsers_Insert
+ON [20118018].AspNetUsers
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('AspNetUsers', 'INSERT', GETDATE());
+END;
+GO
+
+CREATE TRIGGER [20118018].trg_AspNetUsers_Update
+ON [20118018].AspNetUsers
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('AspNetUsers', 'UPDATE', GETDATE());
+END;
+GO
+
+CREATE TRIGGER [20118018].trg_AspNetUsers_Delete
+ON [20118018].AspNetUsers
+AFTER DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('AspNetUsers', 'DELETE', GETDATE());
+END;
+GO
+
+CREATE TRIGGER [20118018].trg_AspNetUserTokens_Insert
+ON [20118018].AspNetUserTokens
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('AspNetUserTokens', 'INSERT', GETDATE());
+END;
+GO
+
+CREATE TRIGGER [20118018].trg_AspNetUserTokens_Update
+ON [20118018].AspNetUserTokens
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('AspNetUserTokens', 'UPDATE', GETDATE());
+END;
+GO
+
+CREATE TRIGGER [20118018].trg_AspNetUserTokens_Delete
+ON [20118018].AspNetUserTokens
+AFTER DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('AspNetUserTokens', 'DELETE', GETDATE());
+END;
+GO
+
+CREATE TRIGGER [20118018].trg_BagProduct_Insert
+ON [20118018].BagProduct
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('BagProduct', 'INSERT', GETDATE());
+END;
+GO
+
+CREATE TRIGGER [20118018].trg_BagProduct_Update
+ON [20118018].BagProduct
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('BagProduct', 'UPDATE', GETDATE());
+END;
+GO
+
+CREATE TRIGGER [20118018].trg_BagProduct_Delete
+ON [20118018].BagProduct
+AFTER DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('BagProduct', 'DELETE', GETDATE());
+END;
+GO
+
+CREATE TRIGGER [20118018].trg_Bags_Insert
+ON [20118018].Bags
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('Bags', 'INSERT', GETDATE());
+END;
+GO
+
+CREATE TRIGGER [20118018].trg_Bags_Update
+ON [20118018].Bags
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('Bags', 'UPDATE', GETDATE());
+END;
+GO
+
+CREATE TRIGGER [20118018].trg_Bags_Delete
+ON [20118018].Bags
+AFTER DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('Bags', 'DELETE', GETDATE());
+END;
+GO
+
+CREATE TRIGGER [20118018].trg_Categories_Insert
+ON [20118018].Categories
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('Categories', 'INSERT', GETDATE());
+END;
+GO
+
+CREATE OR ALTER TRIGGER [20118018].trg_Categories_Update
+ON [20118018].Categories
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('Categories', 'UPDATE', GETDATE());
+END;
+GO
+
+CREATE TRIGGER [20118018].trg_Categories_Delete
+ON [20118018].Categories
+AFTER DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('Categories', 'DELETE', GETDATE());
+END;
+GO
+
+CREATE OR ALTER TRIGGER [20118018].trg_Favourites_Insert
+ON [20118018].Favourites
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('Favourites', 'INSERT', GETDATE());
+END;
+GO
+
+CREATE OR ALTER TRIGGER [20118018].trg_Favourites_Update
+ON [20118018].Favourites
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('Favourites', 'UPDATE', GETDATE());
+END;
+GO
+
+CREATE OR ALTER TRIGGER [20118018].trg_Favourites_Delete
+ON [20118018].Favourites
+AFTER DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('Favourites', 'DELETE', GETDATE());
+END;
+GO
+
+CREATE OR ALTER TRIGGER [20118018].trg_Photos_Insert
+ON [20118018].Photos
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('Photos', 'INSERT', GETDATE());
+END;
+GO
+
+CREATE OR ALTER TRIGGER [20118018].trg_Photos_Update
+ON [20118018].Photos
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('Photos', 'UPDATE', GETDATE());
+END;
+GO
+
+CREATE OR ALTER TRIGGER [20118018].trg_Photos_Delete
+ON [20118018].Photos
+AFTER DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('Photos', 'DELETE', GETDATE());
+END;
+GO
+
+CREATE OR ALTER TRIGGER [20118018].trg_ProductFavourite_Insert
+ON [20118018].ProductFavourite
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('ProductFavourite', 'INSERT', GETDATE());
+END;
+GO
+
+CREATE OR ALTER TRIGGER [20118018].trg_ProductFavourite_Delete
+ON [20118018].ProductFavourite
+AFTER DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('ProductFavourite', 'DELETE', GETDATE());
+END;
+GO
+
+CREATE OR ALTER TRIGGER [20118018].trg_Products_Insert
+ON [20118018].Products
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('Products', 'INSERT', GETDATE());
+END;
+GO
+
+CREATE OR ALTER TRIGGER [20118018].trg_Products_Update
+ON [20118018].Products
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('Products', 'UPDATE', GETDATE());
+END;
+GO
+
+CREATE OR ALTER TRIGGER [20118018].trg_Products_Delete
+ON [20118018].Products
+AFTER DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [20118018].Log_20118018 (TableName, OperationType, CreatedAt)
+    VALUES ('Products', 'DELETE', GETDATE());
+END;
+GO
