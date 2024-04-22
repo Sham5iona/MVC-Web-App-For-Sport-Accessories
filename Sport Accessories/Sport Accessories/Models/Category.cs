@@ -27,8 +27,7 @@ namespace Sport_Accessories.Models
 
         public ICollection<Product> Products { get; set; }
 
-        //generate a value when the row is inserted or updated
-        //this column won't be touched in any way
+        //insert a value when its changed or added
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         private DateTime _last_modified_20118018;
         public DateTime LastModified_20118018
@@ -46,6 +45,7 @@ namespace Sport_Accessories.Models
             this.CategoryName = category_name;
             this.IsActive = is_active;
             this.Products = new List<Product>();
+            this.LastModified_20118018 = DateTime.Now;
         }
     }
 }

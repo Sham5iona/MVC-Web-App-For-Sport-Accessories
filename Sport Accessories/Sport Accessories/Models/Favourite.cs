@@ -26,7 +26,7 @@ namespace Sport_Accessories.Models
 
         public ICollection<ProductFavourite> ProductFavourites { get; set; }
 
-        //generate a value when the row is inserted or updated
+        //insert a value when its changed or added
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         private DateTime _updated_at;
         public DateTime UpdatedAt
@@ -35,8 +35,7 @@ namespace Sport_Accessories.Models
             private set { _updated_at = value; }
         }
 
-        //generate a value when the row is inserted or updated
-        //this column won't be touched in any way
+        //insert a value when its changed or added
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         private DateTime _last_modified_20118018;
         public DateTime LastModified_20118018
@@ -54,6 +53,8 @@ namespace Sport_Accessories.Models
         {
             this.UserId = user_id;
             this.ProductFavourites = new List<ProductFavourite>();
+            this.UpdatedAt = DateTime.Now;
+            this.LastModified_20118018 = DateTime.Now;
         }
     }
 }

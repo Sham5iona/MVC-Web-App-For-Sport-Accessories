@@ -26,8 +26,7 @@ namespace Sport_Accessories.Models
             private set { _product_id = value; }
         }
 
-        //generate a value when the row is inserted or updated
-        //this column won't be touched in any way
+        //insert a value when its changed or added
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         private DateTime _last_modified_20118018;
         public DateTime LastModified_20118018
@@ -45,6 +44,7 @@ namespace Sport_Accessories.Models
         {
             this._file_name = file_name;
             this.ProductId = product_id;
+            this.LastModified_20118018 = DateTime.Now;
         }
     }
 }
