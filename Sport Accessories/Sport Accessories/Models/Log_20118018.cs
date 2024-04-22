@@ -25,8 +25,6 @@ namespace Sport_Accessories.Models
             private set { _operation_type = value;}
         }
 
-        //generate a value when the row is inserted or updated
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         private DateTime _created_at;
         public DateTime CreatedAt
         {

@@ -10,8 +10,16 @@ namespace Sport_Accessories.Areas.Identity.Models
         public Bag Bag { get; set; }
         public Favourite Favourite { get; set; }
 
-        //generate a value when the row is inserted or updated
-        //this column won't be touched in any way
+        //add default value in case when the superadmin is created and this property can't
+        //be assigned because the setter is private
+        private string _file_name = "defaultImage.jpg";
+        public string FileName
+        {
+            get { return _file_name; }
+            private set { _file_name = value; }
+        }
+
+        //insert a value when its changed or added
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         private DateTime _last_modified_20118018;
         public DateTime LastModified_20118018
@@ -20,9 +28,22 @@ namespace Sport_Accessories.Areas.Identity.Models
             private set { _last_modified_20118018 = value; }
         }
 
-        public User()
+        public User(string username, string password,
+                    string file_name_url, string email)
         {
             this.Products = new List<Product>();
+            this.PasswordHash = password;
+            this.LastModified_20118018 = DateTime.Now;
+            this.FileName = file_name_url;
+            this.UserName = username;
+            this.Email = email;
+        }
+        public User() //empty constructor for EFCore
+        {
+        }
+        internal void UpdateFile(string filename)
+        {
+            this.FileName = filename;
         }
     }
 }
