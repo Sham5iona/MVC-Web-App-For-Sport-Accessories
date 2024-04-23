@@ -1,5 +1,8 @@
 ﻿
 $("#submitButton").prop('disabled', true);
+
+$('#reset').prop('disabled', true);
+
     $('#imageUpload').change(function () {
         var input = this;
         var reader = new FileReader();
@@ -7,7 +10,9 @@ $("#submitButton").prop('disabled', true);
         reader.onload = function (e) {
             $('#imagePreview img').attr('src', e.target.result);
             $("#submitButton").prop('disabled', false);
-            
+         
+            $('#reset').prop('disabled', false);
+
         };
 
         if (input.files && input.files[0]) {
@@ -24,6 +29,8 @@ $("#submitButton").prop('disabled', true);
     $('#reset').click(function () {
         resetImagePreview();
         $('#imageUpload').val('');
+        $('#reset').prop('disabled', true);
+
     });
 
     // Function to reset the image preview
@@ -32,4 +39,17 @@ $("#submitButton").prop('disabled', true);
         $("#submitButton").prop('disabled', true);
     }
 
+$('#ShowUsernameForm').click(function () {
+    $('#FormChangeUsername').toggle();
+});
+
+$('#ShowPasswordForm').click(function () {
+    $('#ChangePasswordForm').toggle();
+});
+
+
+//show the change username form for always when the span validation displays an error
+if ($('#usernameValidationError').text().trim() !== '') {
+    $('#FormChangeUsername').show();
+}
 
