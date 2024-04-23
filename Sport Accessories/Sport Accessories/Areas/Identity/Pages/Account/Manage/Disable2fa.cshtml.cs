@@ -3,12 +3,15 @@
 #nullable disable
 
 using System;
+
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Sport_Accessories.Areas.Identity.Models;
+
 
 namespace Sport_Accessories.Areas.Identity.Pages.Account.Manage
 {
@@ -38,15 +41,19 @@ namespace Sport_Accessories.Areas.Identity.Pages.Account.Manage
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+
             }
 
             if (!await _userManager.GetTwoFactorEnabledAsync(user))
             {
-                throw new InvalidOperationException($"Cannot disable 2FA for user as it's not currently enabled.");
+                TempData["Error2FA"]  = "Error! Cannot disable 2FA because " +
+                "it has already been!";
+
             }
 
-            return Page();
+            return RedirectToAction("ShowUser", "User");
         }
+        
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -64,7 +71,8 @@ namespace Sport_Accessories.Areas.Identity.Pages.Account.Manage
 
             _logger.LogInformation("User with ID '{UserId}' has disabled 2fa.", _userManager.GetUserId(User));
             StatusMessage = "2fa has been disabled. You can reenable 2fa when you setup an authenticator app";
-            return RedirectToPage("./TwoFactorAuthentication");
+            return RedirectToAction("ShowUser", "User");
+
         }
     }
 }

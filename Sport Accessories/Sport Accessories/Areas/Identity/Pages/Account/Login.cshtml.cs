@@ -23,12 +23,16 @@ namespace Sport_Accessories.Areas.Identity.Pages.Account
     public class LoginModel : PageModel
     {
         private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
         private readonly ILogger<LoginModel> _logger;
-
-        public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger)
+        public DateTimeOffset? DateTimeOffset { get; set; }
+        public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger,
+                            UserManager<User> userManager)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _userManager = userManager;
+
         }
 
         /// <summary>
@@ -89,7 +93,17 @@ namespace Sport_Accessories.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Username, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(Input.Username, Input.Password, isPersistent: Input.RememberMe, lockoutOnFailure: true);
+                
+                if (result.IsLockedOut)
+                {
+                    _logger.LogWarning("User account locked out.");
+                    var user = await _userManager.FindByNameAsync(Input.Username);
+                    await _userManager.SetLockoutEndDateAsync(user, DateTime.Now.AddMinutes(2));
+                    DateTimeOffset = await _userManager.GetLockoutEndDateAsync(user);
+                    return RedirectToPage("./Lockout", new {DateTimeOffset});
+                }
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
@@ -99,11 +113,7 @@ namespace Sport_Accessories.Areas.Identity.Pages.Account
                 {
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
                 }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToPage("./Lockout");
-                }
+
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
