@@ -1,4 +1,6 @@
+
 ﻿using Microsoft.AspNetCore.Identity;
+
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Sport_Accessories.Areas.Identity.Models;
@@ -80,4 +82,3 @@ namespace Sport_Accessories
             app.Run();
         }
     }
-}

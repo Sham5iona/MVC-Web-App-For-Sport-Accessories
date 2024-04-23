@@ -15,6 +15,7 @@ namespace Sport_Accessories.Controllers
         private readonly ITwoFactorAuthentication _2FA;
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<UserController> _logger;
+
         private readonly AbstractProfilePicture _abstractProfilePicture;
         public UpdateProfilePictureViewModel UpdateProfilePictureViewModel { get; set; }
         public User Current_User { get; set; }
@@ -22,6 +23,7 @@ namespace Sport_Accessories.Controllers
                               ITwoFactorAuthentication _2FA,
                               SignInManager<User> signInManager,
                               ILogger<UserController> logger,
+
                               AbstractProfilePicture abstractProfilePicture)
         {
             this._mapper = mapper;
@@ -29,7 +31,9 @@ namespace Sport_Accessories.Controllers
             this._2FA = _2FA;
             this._signInManager = signInManager;
             this._logger = logger;
+
             this._abstractProfilePicture = abstractProfilePicture;
+
 
         }
 
@@ -37,6 +41,7 @@ namespace Sport_Accessories.Controllers
         {
             return View();
         }
+
 
         [HttpGet]
         public IActionResult ChangeUserPassword()
@@ -99,8 +104,6 @@ namespace Sport_Accessories.Controllers
             }
 
             return View("ShowUser", username);
-
-
         }
 
         [HttpGet]
@@ -130,7 +133,7 @@ namespace Sport_Accessories.Controllers
 
                     return RedirectToPage("/Account/Login", new { area = "Identity" });
                 }
-
+                
                 ModelState.AddModelError(string.Empty, "The email doesn't belong to the" +
                     " current user!");
                 return View();
@@ -143,7 +146,9 @@ namespace Sport_Accessories.Controllers
                                          UpdateProfilePictureViewModel Input)
         {
             var user = await _userManager.GetUserAsync(this.User);
+
             if (await _abstractProfilePicture.ChangeProfilePictureAsync(Input.FormFile, user))
+
             {
                 _logger.LogInformation("Successfully updated the profile picture!");
                 return LocalRedirect("/User/ShowUser");
@@ -158,3 +163,4 @@ namespace Sport_Accessories.Controllers
 
     }
 }
+
