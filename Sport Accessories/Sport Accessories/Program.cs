@@ -27,7 +27,13 @@ namespace Sport_Accessories
             {
 
                 options.SignIn.RequireConfirmedAccount = true;
-                options.Lockout.MaxFailedAccessAttempts = 23;
+
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireDigit = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequiredUniqueChars = 1;
+                options.Lockout.MaxFailedAccessAttempts = 5;
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
 
 
@@ -49,8 +55,7 @@ namespace Sport_Accessories
             builder.Services.AddTransient<ITwoFactorAuthentication,
                                           TwoFactorAuthentication>();
 
-            builder.Services.AddScoped<UpdateProfilePicture>();
-
+            builder.Services.AddTransient<AbstractProfilePicture, UpdateProfilePicture>();
 
             var app = builder.Build();
 
@@ -82,3 +87,4 @@ namespace Sport_Accessories
             app.Run();
         }
     }
+}
