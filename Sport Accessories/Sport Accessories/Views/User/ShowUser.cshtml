@@ -16,20 +16,9 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="~/js/site.js"></script>
-    
-    <style>
-        .user-card {
-            margin-bottom: 20px;
-        }
 
-        #imageUpload {
-            display: none;
-        }
+    <link rel="stylesheet" href="~/css/site.css" />
 
-        #imagePreview {
-            cursor: pointer;
-        }
-    </style>
 </head>
 <body>
     @{
@@ -39,11 +28,22 @@
         <h2>User Details</h2>
         <div class="card user-card">
             <div class="card-body" style="display:flex; justify-content:space-between;">
+                <div class="form-group">
+                    
                 <h5 class="card-title">
-                    Username: @user.UserName <a style="text-decoration:none;" asp-action="ChangeUsername">
-                        ✏️
+                    Username: @user.UserName <a style="text-decoration:none;">
+                            <span style="cursor:pointer;" id="ShowUsernameForm">✏️</span>
                     </a>
+                        
                 </h5>
+                    <span id="usernameValidationError" asp-validation-for="@Model.Username" class="text-danger"></span>
+                    <form id="FormChangeUsername" method="post" style="display:none;" asp-action="ChangeUsername">
+                <input id="UsernameInput" class="form-control" type="text" asp-for="@Model.Username" placeholder="Username" value="@user.UserName"/>
+                        
+                <button id="SubmitUsername" type="submit" name="SubmitUsername">Save</button>
+            </form>
+            </div>
+
                 <input type="hidden" id="originalImageUrl" value="/images/@user.FileName" />
                 <form enctype="multipart/form-data" method="post" asp-action="UpdateProfilePicture">
                     <div style="display:flex; flex-direction:column; align-items:center;">
@@ -51,7 +51,7 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <label for="imageUpload" id="imagePreview">
                             
-                            <img id="x" class="img-fluid" name="image" src="~/images/@user.FileName" style="height:90px;width:100px;border-radius:120px;" />
+                            <img class="img-fluid" name="image" src="~/images/@user.FileName" style="height:90px;width:100px;border-radius:120px;" />
                             
                         </label>
                         <div style="display:flex;flex-direction:row;margin:10px;">
@@ -60,11 +60,46 @@
                         </div>
                     </div>
                     <input asp-for="@Model.FormFile" id="imageUpload" type="file" accept="image/*" style="display:none;" />
-                </form>
+                </form>                    
 
-                <h5><a class="card-text" asp-action="ChangeUserPassword">Change Password</a></h5>
+                    <h5><a style="cursor:pointer;" class="card-text" id="ShowPasswordForm" asp-action="ChangeUserPassword">
+                        Change Password
+                        </a></h5>
+
+                
+
                 <h5><a class="card-text" asp-action="Add2FactorAuthentication">Add two-factor authentication</a></h5>
-            </div>
+               
+
+                <h5><a class="card-text" asp-area="Identity" asp-page="/Account/Manage/Disable2fa">
+                Disable 2FA</a>
+                </h5>
+                @if (TempData["Error2FA"] != null)
+                {
+                    <div class="modal" id="errorModal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Error</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p id="ErrorText2FA">@TempData["Error2FA"]</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+
+                        $('#errorModal').modal('show');
+                        
+                    </script>
+                }
+
+                </div>
         </div>
     </div>
 </body>
