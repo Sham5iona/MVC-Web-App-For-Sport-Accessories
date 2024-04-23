@@ -19,13 +19,10 @@ namespace Sport_Accessories.Mapper
             CreateMap<TwoFactorAuthenticationViewModel, User>();
 
             CreateMap<UpdateProfilePictureViewModel, User>()
-                .ForMember(dest => dest.UserName, opt => opt.Ignore())
                 .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
                 .ForMember(dest => dest.Email, opt => opt.Ignore());
 
-            //ignore the Username when changing the profile picture only
-            CreateMap<User, UpdateProfilePictureViewModel>()
-                .ForMember(dest => dest.Username, opt => opt.Ignore());
+            CreateMap<User, UpdateProfilePictureViewModel>();
 
         }
     }
