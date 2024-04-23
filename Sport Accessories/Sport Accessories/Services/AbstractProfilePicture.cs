@@ -12,6 +12,5 @@ namespace Sport_Accessories.Services
         public abstract Task<bool> ChangeProfilePictureAsync(IFormFile profilePicture,
                                                              User user);
         
-
     }
 }
