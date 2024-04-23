@@ -32,6 +32,7 @@ namespace Sport_Accessories.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _userManager = userManager;
+
         }
 
         /// <summary>
@@ -102,6 +103,7 @@ namespace Sport_Accessories.Areas.Identity.Pages.Account
                     DateTimeOffset = await _userManager.GetLockoutEndDateAsync(user);
                     return RedirectToPage("./Lockout", new {DateTimeOffset});
                 }
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
@@ -111,7 +113,7 @@ namespace Sport_Accessories.Areas.Identity.Pages.Account
                 {
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
                 }
-                
+
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
