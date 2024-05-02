@@ -45,7 +45,7 @@ namespace Sport_Accessories.Data
             builder.Entity<Category>().HasMany(c => c.Products).WithOne(p => p.Category)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<Product>().HasMany(p => p.Photos).WithOne(ph => ph.Product)
+            builder.Entity<Product>().HasOne(p => p.Photo).WithOne(ph => ph.Product)
                 .OnDelete(DeleteBehavior.Cascade);
 
 
@@ -88,6 +88,8 @@ namespace Sport_Accessories.Data
             builder.Entity<User>().ToTable(tb => tb.HasTrigger("tg_Users_Delete"));
 
         }
-        
+        public DbSet<Sport_Accessories.Models.ProductFavourite> ProductFavourite { get; set; } = default!;
+
+
     }
 }
