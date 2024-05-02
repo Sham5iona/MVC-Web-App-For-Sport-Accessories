@@ -40,5 +40,10 @@ namespace Sport_Accessories.Models
             this._file_name = file_name;
             this.LastModified_20118018 = DateTime.Now;
         }
+
+        internal void UpdateFile(string file_name)
+        {
+            this.FileName = file_name;
+        }
     }
 }

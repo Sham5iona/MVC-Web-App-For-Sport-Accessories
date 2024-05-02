@@ -34,12 +34,13 @@ namespace Sport_Accessories.Models
 
         public Log_20118018() // emprty constructor for EFCore
         {
-            
+            this.CreatedAt = DateTime.Now;
         }
 
         public Log_20118018(string table_name, string operation_type)
         {
             this.TableName = table_name;
+            this.CreatedAt = DateTime.Now;
             this.OperationType = operation_type;
         }
 

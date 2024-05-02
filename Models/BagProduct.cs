@@ -33,6 +33,7 @@ namespace Sport_Accessories.Models
 
         public BagProduct() //empty constructor for EFCore
         {
+            this.LastModified_20118018 = DateTime.Now;
         }
 
     }
