@@ -23,7 +23,8 @@ namespace Sport_Accessories.Services
                 file_name = Guid.NewGuid().ToString() +
                                     Path.GetExtension(profilePicture.FileName);
 
-                string upload_path = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                string upload_path = Path.Combine(_webHostEnvironment.WebRootPath,
+                                                                        "images");
 
                 string file_path = Path.Combine(upload_path, file_name);
 
