@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
@@ -10,8 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Sport_Accessories.Areas.Identity.Models;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
 
 namespace Sport_Accessories.Areas.Identity.Pages.Account.Manage
 {
@@ -72,6 +69,7 @@ namespace Sport_Accessories.Areas.Identity.Pages.Account.Manage
             _logger.LogInformation("User with ID '{UserId}' has disabled 2fa.", _userManager.GetUserId(User));
             StatusMessage = "2fa has been disabled. You can reenable 2fa when you setup an authenticator app";
             return RedirectToAction("ShowUser", "User");
+
         }
     }
 }
