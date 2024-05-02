@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sport Accessories</title>
+    <link rel="stylesheet" href="~/css/IndexStyle.css">
+
+</head>
+<body>
+
+    <main>
+        <a id="addOfferBtn" asp-action="AddOffer" asp-controller="Offer" class="btn btn-primary">
+            Add an offer
+        </a>
+        
+        <section class="offers">
+            <div class="offer">
+                <img src="~/offers_images/" alt="Offer 1">
+                <h3>Offer Title 1</h3>
+                <p>Description of offer 1</p>
+                <button>View Details</button>
+            </div>
+            <div class="offer">
+                <img src="offer2.jpg" alt="Offer 2">
+                <h3>Offer Title 2</h3>
+                <p>Description of offer 2</p>
+                <button>View Details</button>
+            </div>
+
+        </section>
+    </main>
+
+ 
+
+</body>
+</html>

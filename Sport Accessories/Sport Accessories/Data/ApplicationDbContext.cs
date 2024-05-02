@@ -90,5 +90,6 @@ namespace Sport_Accessories.Data
         }
         public DbSet<Sport_Accessories.Models.ProductFavourite> ProductFavourite { get; set; } = default!;
 
+
     }
 }

@@ -102,9 +102,11 @@ namespace Sport_Accessories.Areas.Identity.Pages.Account
                     if (current_email is null)
                     {
                         var result = await _userManager.CreateAsync(user, Input.Password);
+                        
                         var role_result = await _userManager.AddToRoleAsync(user, "User");
 
                         if (result.Succeeded && role_result.Succeeded)
+
                         {
 
                             _logger.LogInformation("User created a new account with password.");
