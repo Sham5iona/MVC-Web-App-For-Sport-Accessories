@@ -25,7 +25,9 @@ namespace Sport_Accessories.Areas.Identity.Pages.Account
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly ILogger<LoginModel> _logger;
+
         public DateTimeOffset? DateTimeOffset { get; set; } = DateTime.Now;
+
 
         public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger,
                             UserManager<User> userManager)
@@ -33,6 +35,7 @@ namespace Sport_Accessories.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _userManager = userManager;
+
         }
 
         /// <summary>
@@ -77,6 +80,7 @@ namespace Sport_Accessories.Areas.Identity.Pages.Account
                 ModelState.AddModelError(string.Empty, "Admin login is forbidden!");
                 return;
             }
+
             returnUrl ??= Url.Content("~/");
 
             // Clear the existing external cookie to ensure a clean login process
@@ -89,6 +93,7 @@ namespace Sport_Accessories.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+
 
             if (returnUrl is not null && returnUrl.Contains("Admin"))
             {
