@@ -1,0 +1,103 @@
+﻿@model IList<Product>;
+
+@{
+    ViewData["Title"] = "Offers";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+</head>
+<body>
+
+    <div class="container-fluid">
+        <h2 style="text-align:center;">List of all offers</h2>
+        <a class="btn-link" style="font-size:20px;display:flex;align-items:center;justify-content:center" asp-action="HomeAdmin">
+            Return to home admin
+        </a>
+
+        </br>
+        @if (Model != null && Model.Any())
+        {
+            <div class="row">
+                <div class="col">
+                    <table class="table table-striped">
+                        <!-- Table header -->
+                        <thead>
+                            <tr>
+                                <!-- Header columns -->
+                                <th scope="col">Product name</th>
+                                <th scope="col">Category Id</th>
+                                <th scope="col">Product image</th>
+                                <th scope="col">Last modified</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Updated at</th>
+                                <th scope="col">Viewers</th>
+                                <th scope="col">User Id</th>
+                                <th scope="col">Currency</th>
+                                <th scope="col">Is promo?</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">New price</th>
+                                <th scope="col">Edit</th>
+                                <th scope="col">Delete</th>
+                            </tr>
+                        </thead>
+                        <!-- Table body -->
+                        <tbody>
+                            @foreach (var product in Model)
+                            {
+                                <tr>
+                                    <!-- User data -->
+                                    <td>@product.ProductName</td>
+                                    <td>@product.CategoryId</td>
+                                    
+                                    <td>
+                                        <img src="~/offers_images/@product.Photo.FileName"
+                                        style="width:80px;height:70px;border-radius:150px;" />
+                                    </td>
+
+                                    <td>@product.LastModified_20118018</td>
+                                    <td>@product.ProductDescription</td>
+                                    <td>@product.UpdatedAt</td>
+                                    <td>@product.Viewers</td>
+                                    <td>@product.UserId</td>
+                                    <td>@product.Currency</td>
+                                    <td>@product.IsPromo</td>
+                                    <td>@product.Price</td>
+                                    <td>@product.NewPrice</td>
+                                    <!-- Edit button -->
+                                    <td>
+                                        <form asp-controller="Offer" asp-action="EditOffer" method="post">
+                                            <button type="submit" class="btn btn-info">Edit</button>
+                                            <input type="hidden" name="Id" value="@product.ProductId" />
+                                        </form>
+                                    </td>
+                                    <!-- Delete button -->
+                                    <td>
+                                        <form asp-controller="Offer" asp-action="DeleteOffer" method="post" onsubmit="return confirm('All associated data with the offer will be deleted!\nAre you sure?');">
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                            <input type="hidden" name="Id" value="@product.ProductId" />
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+        else
+        {
+            <h3>No offers found.</h3>
+        }
+    </div>
+
+</body>
+</html>
