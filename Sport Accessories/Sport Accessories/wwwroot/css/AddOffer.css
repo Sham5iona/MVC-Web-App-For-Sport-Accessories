@@ -1,0 +1,46 @@
+﻿.dropdown-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* Style for the dropdown input */
+.dropdown-input {
+    padding: 5px 5px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #fff;
+    width: 200px; /* Adjust width as needed */
+}
+
+/* Style for the dropdown content */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+}
+
+/* Style for the dropdown options */
+.dropdown-option {
+    padding: 10px;
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+}
+
+/* Style for the dropdown options on hover */
+.dropdown-option:hover {
+    background-color: #f0f0f0;
+}
+
+.container{
+    display:flex;
+    flex-direction:column;
+    justify-content:space-around;
+}
