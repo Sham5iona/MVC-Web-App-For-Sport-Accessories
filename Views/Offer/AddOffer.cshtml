@@ -1,0 +1,119 @@
+﻿﻿@using Sport_Accessories.ViewModels;
+@model OfferViewModel;
+@{
+    Layout = null;
+}
+
+<html>
+
+<head>
+    <title>Add an offer</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="~/js/AddOffer.js"></script>
+    <script src="~/js/EditUser.js"></script>
+    <link rel="stylesheet" href="~/css/EditUser.css" />
+
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Add an offer</h2>
+        <a class="btn-link" style="font-size:20px;" asp-action="Index" asp-controller="Home">
+            Return to home admin panel
+        </a>
+        
+        <br />
+        <form enctype="multipart/form-data" method="post" asp-action="AddOffer">
+
+            <h4><div class="text-danger" asp-validation-summary="ModelOnly"></div></h4>
+            <div class="form-group">
+                <label asp-for="ProductName">Product name</label>
+                <input type="text" asp-for="ProductName" class="form-control" id="text" placeholder="Enter product name">
+
+                <h4 class="text-danger" role="alert">
+                    <span id="error" asp-validation-for="ProductName"></span>
+                </h4>
+
+            </div>
+
+            <div class="form-group">
+                <div class="dropdown-container">
+                    @Html.LabelFor(model => model.CategoryName)
+                    @Html.DropDownListFor(model => model.CategoryName, new SelectList(Model.Categories, "CategoryName", "CategoryName"), "-- Select a category --", new { @class = "dropdown-input form-control" })
+                    <h4 class="text-danger">
+                        @Html.ValidationMessageFor(model => model.CategoryName)
+                    </h4>
+                </div>
+            </div>
+            
+
+            <div class="form-group">
+                <label asp-for="ProductDescription">Product Description</label>
+                <textarea asp-for="ProductDescription" class="form-control" id="text" placeholder="Enter product description"></textarea>
+
+                <h4 class="text-danger" role="alert">
+                    <span id="error" asp-validation-for="ProductDescription"></span>
+                </h4>
+
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Currency">Price's currency symbol</label>
+                <input type="text" class="form-control" id="date" placeholder="Enter price currency" asp-for="Currency">
+                <h4 class="text-danger" role="alert">
+                    <span asp-validation-for="Currency"></span>
+                </h4>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="@Model.FormFile">Add product image</label>
+                <input type="hidden" id="originalImageUrl" value="/offers_images/defaultProductImage.jpg" />
+
+                <div>
+                    <label for="imageUpload" id="imagePreview">
+
+                        <img class="img-fluid" name="image" src="~/offers_images/defaultProductImage.jpg" style="height:90px;width:100px;border-radius:120px;" />
+
+                    </label>
+                    <div style="display:flex;flex-direction:row;margin:10px;">
+                        <button id="reset" type="button" style="font-size:20px;background-color:cornflowerblue;border-radius:10px;">Reset</button>
+                    </div>
+                </div>
+            </div>
+            <input asp-for="@Model.FormFile" id="imageUpload" type="file" accept="image/*" style="display:none;" />
+
+            <div class="form-group">
+                <label asp-for="IsPromo">Is in promotion?</label>
+                <input type="checkbox" id="checkbox" onclick="CheckIsPromoValue()" asp-for="IsPromo">
+                <h4 class="text-danger" role="alert">
+                    <span asp-validation-for="IsPromo"></span>
+                </h4>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Price">Product price</label>
+                <input type="text" class="form-control" id="number" placeholder="Enter price" asp-for="Price">
+                <h4 class="text-danger" role="alert">
+                    <span asp-validation-for="Price"></span>
+                </h4>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NewPrice">New Price - optional</label>
+                <input type="text" class="form-control" id="number" placeholder="Enter new price" asp-for="NewPrice">
+                <h4 class="text-danger" role="alert">
+                    <span asp-validation-for="NewPrice"></span>
+                </h4>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+        </form>
+    </div>
+
+
+
+</body>
+</html>
