@@ -25,7 +25,8 @@ namespace Sport_Accessories.Models
         public Guid CategoryId
         {
             get { return _category_id; }
-            private set { _category_id = value;}
+            set { _category_id = value;}
+
         }
 
         private string _product_description;
@@ -41,14 +42,9 @@ namespace Sport_Accessories.Models
         public DateTime UpdatedAt
         {
             get { return _updated_at; }
-            private set { _updated_at = value;}
-        }
 
-        private int _count;
-        public int Count
-        {
-            get { return _count; }
-            private set { _count = value; }
+            private set { _updated_at = value; }
+
         }
 
         private int _viewers;
@@ -66,7 +62,8 @@ namespace Sport_Accessories.Models
         public string UserId
         {
             get { return _user_id; }
-            private set { _user_id = value;}
+            set { _user_id = value;}
+
         }
 
         private char _currency;
@@ -83,7 +80,14 @@ namespace Sport_Accessories.Models
             private set { _is_promo = value; }
         }
 
-        public ICollection<Photo> Photos { get; set; }
+        public Photo Photo {  get; set; }
+        private Guid _photo_id;
+        public Guid PhotoId
+        {
+            get { return _photo_id; }
+            set { _photo_id = value;}
+        }
+
 
         public ICollection<BagProduct> BagProducts { get; set; }
 
@@ -100,7 +104,8 @@ namespace Sport_Accessories.Models
         public decimal? NewPrice
         {
             get { return _new_price; }
-            private set { _new_price = value;}
+            set { _new_price = value;}
+
         }
 
         //insert a value when its changed or added
@@ -114,28 +119,29 @@ namespace Sport_Accessories.Models
 
         public Product() //empty constructor
         {
-            
+            LastModified_20118018 = DateTime.Now;
+            UpdatedAt = DateTime.Now;
         }
 
-        public Product(string product_name, string description, int count, int viewers,
+        public Product(string product_name, string description, int viewers,
+
                        string user_id, char currency, bool is_promo, decimal price,
                        decimal? new_price, Guid category_id)
         {
             this.ProductName = product_name;
             this.ProductDescription = description;
-            this.Count = count;
             this.Viewers = viewers;
             this.UserId = user_id;
             this.Currency = currency;
             this.IsPromo = is_promo;
             this.Price = price;
             this.NewPrice = new_price;
-            this.CategoryId = category_id;
-            this.Photos = new List<Photo>();
+            this.CategoryId = category_id;h
             this.BagProducts = new List<BagProduct>();
             this.ProductFavourites = new List<ProductFavourite>();
-            this.UpdatedAt = DateTime.Now;
             this.LastModified_20118018 = DateTime.Now;
+            this.UpdatedAt = DateTime.Now;
+
         }
 
     }

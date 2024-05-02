@@ -15,16 +15,11 @@ namespace Sport_Accessories.Models
         public string FileName
         {
             get { return _file_name; }
-            private set { _file_name = value; }
+            set { _file_name = value; }
         }
 
         public Product Product { get; set; }
-        private Guid _product_id;
-        public Guid ProductId
-        {
-            get { return _product_id; }
-            private set { _product_id = value; }
-        }
+
 
         //insert a value when its changed or added
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
@@ -32,19 +27,27 @@ namespace Sport_Accessories.Models
         public DateTime LastModified_20118018
         {
             get { return _last_modified_20118018; }
-            private set { _last_modified_20118018 = value; }
+
+            private set { _last_modified_20118018 = DateTime.Now; }
+
         }
 
         public Photo() //empty constructor for EFCore
         {
-            
+            this.LastModified_20118018 = DateTime.Now;
+
         }
 
         public Photo(string file_name, Guid product_id)
         {
             this._file_name = file_name;
-            this.ProductId = product_id;
             this.LastModified_20118018 = DateTime.Now;
         }
+
+        internal void UpdateFile(string file_name)
+        {
+            this.FileName = file_name;
+        }
+
     }
 }

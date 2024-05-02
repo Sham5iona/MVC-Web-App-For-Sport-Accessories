@@ -29,7 +29,8 @@ namespace Sport_Accessories.Models
         public DateTime CreatedAt
         {
             get { return _created_at; }
-            private set { _created_at = value; }
+            private set { _created_at = DateTime.Now; }
+
         }
 
         public Log_20118018() // emprty constructor for EFCore

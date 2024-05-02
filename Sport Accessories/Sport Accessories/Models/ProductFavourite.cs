@@ -26,12 +26,15 @@ namespace Sport_Accessories.Models
         public DateTime LastModified_20118018
         {
             get { return _last_modified_20118018; }
-            private set { _last_modified_20118018 = value; }
+
+            private set { _last_modified_20118018 = DateTime.Now; }
+
         }
 
         public ProductFavourite() //empty constructor for EFCore
         {
          this.LastModified_20118018 = DateTime.Now;
+
         }
 
     }
