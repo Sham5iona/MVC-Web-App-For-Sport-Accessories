@@ -37,13 +37,14 @@ namespace Sport_Accessories.Models
         }
         public Category() //empty constructor for EFCore
         {
-            
+            this.LastModified_20118018 = DateTime.Now;
         }
 
         public Category(string category_name, bool is_active)
         {
             this.CategoryName = category_name;
             this.IsActive = is_active;
+            this.LastModified_20118018 = DateTime.Now;
             this.Products = new List<Product>();
         }
     }
