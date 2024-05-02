@@ -34,6 +34,7 @@ namespace Sport_Accessories.Models
         {
             get { return _last_modified_20118018; }
             private set { _last_modified_20118018 = DateTime.Now; }
+
         }
         public Category() //empty constructor for EFCore
         {
@@ -45,6 +46,8 @@ namespace Sport_Accessories.Models
             this.CategoryName = category_name;
             this.IsActive = is_active;
             this.Products = new List<Product>();
+            this.LastModified_20118018 = DateTime.Now;
+
         }
     }
 }
