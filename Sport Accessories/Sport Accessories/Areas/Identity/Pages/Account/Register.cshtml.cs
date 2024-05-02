@@ -90,11 +90,9 @@ namespace Sport_Accessories.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
-                var current_username = await _userManager.Users.FirstOrDefaultAsync(
-                                        u => u.UserName == Input.Username);
+                var current_username = await _userManager.FindByNameAsync(Input.Username);
 
-                var current_email = await _userManager.Users.FirstOrDefaultAsync(
-                                    u => u.Email == Input.Email);
+                var current_email = await _userManager.FindByEmailAsync(Input.Email);
 
                 await _userStore.SetUserNameAsync(user, Input.Username, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -104,8 +102,11 @@ namespace Sport_Accessories.Areas.Identity.Pages.Account
                     if (current_email is null)
                     {
                         var result = await _userManager.CreateAsync(user, Input.Password);
+                        
+                        var role_result = await _userManager.AddToRoleAsync(user, "User");
 
-                        if (result.Succeeded)
+                        if (result.Succeeded && role_result.Succeeded)
+
                         {
 
                             _logger.LogInformation("User created a new account with password.");

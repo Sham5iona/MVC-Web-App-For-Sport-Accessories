@@ -25,25 +25,29 @@ namespace Sport_Accessories.Areas.Identity.Models
         public DateTime LastModified_20118018
         {
             get { return _last_modified_20118018; }
-            private set { _last_modified_20118018 = value; }
+
+            private set { _last_modified_20118018 = DateTime.Now; }
         }
 
         public User(string username, string password,
-                    string file_name_url, string email)
+                    string file_name_url, string email, int access_failed_count)
         {
             this.Products = new List<Product>();
             this.PasswordHash = password;
-            this.LastModified_20118018 = DateTime.Now;
             this.FileName = file_name_url;
             this.UserName = username;
             this.Email = email;
+            this.LastModified_20118018 = DateTime.Now;
+            this.AccessFailedCount = access_failed_count;
         }
         public User() //empty constructor for EFCore
         {
+            this.LastModified_20118018 = DateTime.Now;
         }
         internal void UpdateFile(string filename)
         {
             this.FileName = filename;
         }
     }
+
 }

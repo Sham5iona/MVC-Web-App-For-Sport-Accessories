@@ -25,7 +25,10 @@ namespace Sport_Accessories.Areas.Identity.Pages.Account
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly ILogger<LoginModel> _logger;
-        public DateTimeOffset? DateTimeOffset { get; set; }
+
+        public DateTimeOffset? DateTimeOffset { get; set; } = DateTime.Now;
+
+
         public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger,
                             UserManager<User> userManager)
         {
@@ -72,6 +75,11 @@ namespace Sport_Accessories.Areas.Identity.Pages.Account
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
             }
+            if (returnUrl is not null && returnUrl.Contains("Admin"))
+            {
+                ModelState.AddModelError(string.Empty, "Admin login is forbidden!");
+                return;
+            }
 
             returnUrl ??= Url.Content("~/");
 
@@ -85,44 +93,105 @@ namespace Sport_Accessories.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+
+
+            if (returnUrl is not null && returnUrl.Contains("Admin"))
+            {
+                ModelState.AddModelError(string.Empty, "Admin login is forbidden!");
+                return Page();
+            }
+
             returnUrl ??= Url.Content("~/");
+
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
-            if (ModelState.IsValid)
+            var user = await _userManager.FindByNameAsync(Input.Username);
+
+            if (user is not null)
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Username, Input.Password, isPersistent: Input.RememberMe, lockoutOnFailure: true);
-                
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    var user = await _userManager.FindByNameAsync(Input.Username);
-                    await _userManager.SetLockoutEndDateAsync(user, DateTime.Now.AddMinutes(2));
-                    DateTimeOffset = await _userManager.GetLockoutEndDateAsync(user);
-                    return RedirectToPage("./Lockout", new {DateTimeOffset});
-                }
+                int access_failed_count = user.AccessFailedCount;
 
-                if (result.Succeeded)
+                if (ModelState.IsValid)
                 {
-                    _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
-                }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
-                }
+                    // This doesn't count login failures towards account lockout
+                    // To enable password failures to trigger account lockout, set lockoutOnFailure: true
 
-                else
-                {
+                    bool isUser = await _userManager.IsInRoleAsync(user, "User");
+
+                    if (isUser)
+                    {
+
+                        var result = await _signInManager.PasswordSignInAsync(
+                            Input.Username, Input.Password, isPersistent: Input.RememberMe,
+                            lockoutOnFailure: true);
+
+                        if (access_failed_count > 5 || result.IsLockedOut)
+                        {
+                            _logger.LogWarning("User account locked out.");
+
+                            TimeSpan defaultLockoutTimeSpan = TimeSpan.FromMinutes(3);
+
+                            DateTime lockoutEndLocalTime = TimeZoneInfo
+                                .ConvertTimeFromUtc(
+                                DateTime.UtcNow.Add(defaultLockoutTimeSpan),
+                                TimeZoneInfo.Local);
+
+                            TimeSpan difference = lockoutEndLocalTime - DateTime.Now;
+
+                            if (user.LockoutEnd is not null &&
+                                difference > TimeSpan.Zero)
+                            {
+                                DateTimeOffset = user.LockoutEnd;
+
+                                user.AccessFailedCount = 0;
+
+                                //reset the access failed count after lockout
+                                await _userManager.UpdateAsync(user);
+
+                                await _signInManager.SignOutAsync();
+
+                                return RedirectToPage("./Lockout", new { DateTimeOffset });
+                            }
+
+                            await _userManager.SetLockoutEndDateAsync(user,
+                                                DateTime.Now.AddMinutes(3));
+
+                            DateTimeOffset = user.LockoutEnd;
+
+                            user.AccessFailedCount = 0;
+
+                            //reset the access failed count after lockout
+                            await _userManager.UpdateAsync(user);
+
+                            await _signInManager.SignOutAsync();
+
+                            return RedirectToPage("./Lockout", new { DateTimeOffset });
+
+                        }
+                        if (result.Succeeded)
+                        {
+                            _logger.LogInformation("User logged in.");
+                            return LocalRedirect(returnUrl);
+                        }
+                        if (result.RequiresTwoFactor)
+                        {
+                            return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+                        }
+
+                    }
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                     return Page();
                 }
+
+                return Page();
+
+            
             }
 
-            // If we got this far, something failed, redisplay form
+            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             return Page();
+
         }
     }
 }
