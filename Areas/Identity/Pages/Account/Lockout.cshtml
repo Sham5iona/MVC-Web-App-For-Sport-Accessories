@@ -1,0 +1,13 @@
+﻿@page
+@using Sport_Accessories.Areas.Identity.Pages.Account;
+@model LockoutModel;
+@{
+    ViewData["Title"] = "Lockout";
+}
+
+
+<div class="alert-danger">
+    <h1>Your account is locked out until @Model.LockoutEnd to prevent Brute Force attack!</h1>
+<h1>Note: use reliable and valid unique credentials!</h1>
+
+</div>
