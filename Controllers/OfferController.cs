@@ -17,6 +17,7 @@ namespace Sport_Accessories.Controllers
         private readonly IMapper _mapper;
         private readonly ApplicationDbContext _dbcontext;
         private readonly UserManager<User> _userManager;
+        
         public OfferController(SignInManager<User> signInManager,
                                IOfferService offerService,
                                UserManager<User> userManager,
