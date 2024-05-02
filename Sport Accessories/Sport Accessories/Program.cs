@@ -30,9 +30,8 @@ namespace Sport_Accessories
                 options.Password.RequireUppercase = true;
                 options.Password.RequireLowercase = true;
                 options.Password.RequiredUniqueChars = 1;
-                options.Lockout.MaxFailedAccessAttempts = 3;
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
-
+                options.Lockout.AllowedForNewUsers = false;
+                options.Lockout.MaxFailedAccessAttempts = 5;
 
             })
                 .AddDefaultTokenProviders()
@@ -43,6 +42,45 @@ namespace Sport_Accessories
             builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
             builder.Services.AddRazorPages();
+            builder.Services.ConfigureApplicationCookie(
+            options => options.AccessDeniedPath = new PathString(
+                "/Admin/AccessDenied"));
+            builder.Services.ConfigureApplicationCookie(
+            options => options.LoginPath = new PathString(
+                "/Identity/Account/Login"));
+
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Read", policy =>
+                {
+                    policy.RequireClaim("Ability", "Read");
+                });
+            });
+
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Create", policy =>
+                {
+                    policy.RequireClaim("Ability", "Create");
+                });
+            });
+
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Edit", policy =>
+                {
+                    policy.RequireClaim("Ability", "Edit");
+                });
+            });
+
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Delete", policy =>
+                {
+                    policy.RequireClaim("Ability", "Delete");
+                });
+            });
+           
 
             builder.Services.Configure<SMTPSettings>(builder.Configuration
                                                     .GetSection("SMTP"));
@@ -54,10 +92,10 @@ namespace Sport_Accessories
 
             builder.Services.AddTransient<AbstractProfilePicture, UpdateProfilePicture>();
 
+            builder.Services.AddTransient<IOfferService, OfferService>();
+
 
             var app = builder.Build();
-
-            
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -72,11 +110,16 @@ namespace Sport_Accessories
             }
 
             app.UseHttpsRedirection();
+            
             app.UseStaticFiles();
 
+            app.UseStatusCodePagesWithReExecute("/Errors/{0}");
+
             app.UseRouting();
+            
 
             app.UseAuthorization();
+            
 
             app.MapControllerRoute(
                 name: "default",
@@ -85,6 +128,7 @@ namespace Sport_Accessories
             app.MapRazorPages();
 
             app.Run();
+
         }
     }
 }
