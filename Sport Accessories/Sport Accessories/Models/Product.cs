@@ -26,6 +26,7 @@ namespace Sport_Accessories.Models
         {
             get { return _category_id; }
             set { _category_id = value;}
+
         }
 
         private string _product_description;
@@ -41,7 +42,9 @@ namespace Sport_Accessories.Models
         public DateTime UpdatedAt
         {
             get { return _updated_at; }
+
             private set { _updated_at = value; }
+
         }
 
         private int _viewers;
@@ -60,6 +63,7 @@ namespace Sport_Accessories.Models
         {
             get { return _user_id; }
             set { _user_id = value;}
+
         }
 
         private char _currency;
@@ -84,6 +88,7 @@ namespace Sport_Accessories.Models
             set { _photo_id = value;}
         }
 
+
         public ICollection<BagProduct> BagProducts { get; set; }
 
         public ICollection<ProductFavourite> ProductFavourites { get; set; }
@@ -100,6 +105,7 @@ namespace Sport_Accessories.Models
         {
             get { return _new_price; }
             set { _new_price = value;}
+
         }
 
         //insert a value when its changed or added
@@ -118,6 +124,7 @@ namespace Sport_Accessories.Models
         }
 
         public Product(string product_name, string description, int viewers,
+
                        string user_id, char currency, bool is_promo, decimal price,
                        decimal? new_price, Guid category_id)
         {
@@ -129,11 +136,12 @@ namespace Sport_Accessories.Models
             this.IsPromo = is_promo;
             this.Price = price;
             this.NewPrice = new_price;
-            this.CategoryId = category_id;
+            this.CategoryId = category_id;h
             this.BagProducts = new List<BagProduct>();
             this.ProductFavourites = new List<ProductFavourite>();
             this.LastModified_20118018 = DateTime.Now;
             this.UpdatedAt = DateTime.Now;
+
         }
 
     }

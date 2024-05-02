@@ -20,13 +20,16 @@ namespace Sport_Accessories.Models
 
         public Product Product { get; set; }
 
+
         //insert a value when its changed or added
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         private DateTime _last_modified_20118018;
         public DateTime LastModified_20118018
         {
             get { return _last_modified_20118018; }
+
             private set { _last_modified_20118018 = DateTime.Now; }
+
         }
 
         public Photo() //empty constructor for EFCore
@@ -45,5 +48,6 @@ namespace Sport_Accessories.Models
         {
             this.FileName = file_name;
         }
+
     }
 }
