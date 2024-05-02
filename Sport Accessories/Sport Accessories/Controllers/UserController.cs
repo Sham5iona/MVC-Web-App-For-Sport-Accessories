@@ -1,13 +1,7 @@
-﻿using AutoMapper;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
-using Sport_Accessories.Areas.Identity.Models;
-using Sport_Accessories.Services;
-using Sport_Accessories.ViewModels;
 
-namespace Sport_Accessories.Controllers
-{
     public class UserController : Controller
     {
         private readonly IMapper _mapper;
@@ -15,42 +9,44 @@ namespace Sport_Accessories.Controllers
         private readonly ITwoFactorAuthentication _2FA;
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<UserController> _logger;
-
         private readonly AbstractProfilePicture _abstractProfilePicture;
         public UpdateProfilePictureViewModel UpdateProfilePictureViewModel { get; set; }
         public User Current_User { get; set; }
-        public UserController(IMapper mapper, UserManager<User> userManager,
+        public UserController(UserManager<User> userManager,
                               ITwoFactorAuthentication _2FA,
                               SignInManager<User> signInManager,
                               ILogger<UserController> logger,
-
                               AbstractProfilePicture abstractProfilePicture)
         {
-            this._mapper = mapper;
             this._userManager = userManager;
             this._2FA = _2FA;
             this._signInManager = signInManager;
             this._logger = logger;
-
             this._abstractProfilePicture = abstractProfilePicture;
 
-
         }
 
+        [HttpGet]
         public IActionResult ShowUser()
         {
-            return View();
+            if (_signInManager.IsSignedIn(User))
+            {
+                return View();
+            }
+            return StatusCode(403);
         }
-
 
         [HttpGet]
         public IActionResult ChangeUserPassword()
         {
-
-            return View();
-            
+            if (_signInManager.IsSignedIn(User))
+            {
+                return View();
+            }
+            return StatusCode(403);
         }
 
+        [HttpPost]
         public async Task<IActionResult> ChangeUserPasswordAsync(
                                         ChangeUserPasswordViewModel Input)
         {
@@ -93,7 +89,7 @@ namespace Sport_Accessories.Controllers
 
                 if (result.Succeeded)
                 {
-                    return View("ShowUser");
+                    return RedirectToAction("ShowUser");
                 }
 
                 foreach (var error in result.Errors)
@@ -104,12 +100,18 @@ namespace Sport_Accessories.Controllers
             }
 
             return View("ShowUser", username);
+
         }
 
         [HttpGet]
         public async Task<IActionResult> Add2FactorAuthenticationAsync(string? Email)
         {
-            if (!_signInManager.IsSignedIn(User))
+            if (!_signInManager.IsSignedIn(User) && Email is null)
+            {
+                return StatusCode(403);
+                
+            }else if (!_signInManager.IsSignedIn(User))
+
             {
                 Current_User = await _userManager.FindByEmailAsync(Email);
             }
@@ -133,7 +135,7 @@ namespace Sport_Accessories.Controllers
 
                     return RedirectToPage("/Account/Login", new { area = "Identity" });
                 }
-                
+
                 ModelState.AddModelError(string.Empty, "The email doesn't belong to the" +
                     " current user!");
                 return View();
@@ -162,5 +164,6 @@ namespace Sport_Accessories.Controllers
         }
 
     }
+
 }
 
