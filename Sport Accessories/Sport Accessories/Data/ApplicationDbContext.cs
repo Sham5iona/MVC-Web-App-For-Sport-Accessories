@@ -1,15 +1,18 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Sport_Accessories.Areas.Identity.Models;
 using Sport_Accessories.Models;
+using Sport_Accessories.Services;
 
 namespace Sport_Accessories.Data
 {
     public class ApplicationDbContext : IdentityDbContext<User>
     {
 
-        public DbSet<Log_20118018> Log_20118018 {  get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Log_20118018> Log_20118018 { get; set; }
         public DbSet<Bag> Bags { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Favourite> Favourites { get; set; }
@@ -19,6 +22,7 @@ namespace Sport_Accessories.Data
         //With this empty constructor, I leave the services from the Program.cs file
         //to connect to the database without the need to override the
         //OnConfiguring() method.
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -30,8 +34,9 @@ namespace Sport_Accessories.Data
             base.OnModelCreating(builder);
 
             //Add all tables to the created 20118018 schema
-
             builder.HasDefaultSchema("20118018");
+
+            builder.Seed();
 
             //Relationships
 
@@ -40,11 +45,11 @@ namespace Sport_Accessories.Data
             builder.Entity<Category>().HasMany(c => c.Products).WithOne(p => p.Category)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<Product>().HasMany(p => p.Photos).WithOne(ph => ph.Product)
+            builder.Entity<Product>().HasOne(p => p.Photo).WithOne(ph => ph.Product)
                 .OnDelete(DeleteBehavior.Cascade);
 
 
-            builder.Entity<BagProduct>().HasKey(bp => 
+            builder.Entity<BagProduct>().HasKey(bp =>
                 new { bp.ProductId, bp.BagId });
 
             builder.Entity<ProductFavourite>().HasKey(pf =>
@@ -75,6 +80,15 @@ namespace Sport_Accessories.Data
             builder.Entity<User>().HasOne(u => u.Favourite).WithOne(f => f.User)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            //Inform EFCore for the triggers in the Users table
+            builder.Entity<User>().ToTable(tb => tb.HasTrigger("tg_Users_Update"));
+
+            builder.Entity<User>().ToTable(tb => tb.HasTrigger("tg_Users_Insert"));
+
+            builder.Entity<User>().ToTable(tb => tb.HasTrigger("tg_Users_Delete"));
+
         }
+        public DbSet<Sport_Accessories.Models.ProductFavourite> ProductFavourite { get; set; } = default!;
+
     }
 }
