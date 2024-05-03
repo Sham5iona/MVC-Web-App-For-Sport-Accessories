@@ -32,7 +32,7 @@ namespace Sport_Accessories.Models
         public DateTime UpdatedAt
         {
             get { return _updated_at; }
-            private set { _updated_at = DateTime.Now; }
+            private set { _updated_at = value; }
         }
 
         //insert a value when its changed or added
@@ -41,7 +41,7 @@ namespace Sport_Accessories.Models
         public DateTime LastModified_20118018
         {
             get { return _last_modified_20118018; }
-            private set { _last_modified_20118018 = DateTime.Now; }
+            private set { _last_modified_20118018 = value; }
         }
 
         public Favourite() //empty constructor for EFCore
@@ -54,8 +54,6 @@ namespace Sport_Accessories.Models
         {
             this.UserId = user_id;
             this.ProductFavourites = new List<ProductFavourite>();
-            this.UpdatedAt = DateTime.Now;
-            this.LastModified_20118018 = DateTime.Now;
         }
     }
 }

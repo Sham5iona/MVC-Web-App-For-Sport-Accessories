@@ -26,7 +26,7 @@ namespace Sport_Accessories.Models
         public DateTime LastModified_20118018
         {
             get { return _last_modified_20118018; }
-            private set { _last_modified_20118018 = DateTime.Now; }
+            private set { _last_modified_20118018 = value; }
         }
 
         public Photo() //empty constructor for EFCore
@@ -38,7 +38,6 @@ namespace Sport_Accessories.Models
         public Photo(string file_name, Guid product_id)
         {
             this._file_name = file_name;
-            this.LastModified_20118018 = DateTime.Now;
         }
 
         internal void UpdateFile(string file_name)

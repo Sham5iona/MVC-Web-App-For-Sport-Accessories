@@ -41,7 +41,7 @@ namespace Sport_Accessories.Models
         public DateTime UpdatedAt
         {
             get { return _updated_at; }
-            private set { _updated_at = DateTime.Now; }
+            private set { _updated_at = value; }
         }
 
         private int _viewers;
@@ -108,7 +108,7 @@ namespace Sport_Accessories.Models
         public DateTime LastModified_20118018
         {
             get { return _last_modified_20118018; }
-            private set { _last_modified_20118018 = DateTime.Now; }
+            private set { _last_modified_20118018 = value; }
         }
 
         public Product() //empty constructor
@@ -132,8 +132,6 @@ namespace Sport_Accessories.Models
             this.CategoryId = category_id;
             this.BagProducts = new List<BagProduct>();
             this.ProductFavourites = new List<ProductFavourite>();
-            this.LastModified_20118018 = DateTime.Now;
-            this.UpdatedAt = DateTime.Now;
         }
 
     }
