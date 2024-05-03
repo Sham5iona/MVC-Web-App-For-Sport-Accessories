@@ -1,0 +1,57 @@
+﻿@using Sport_Accessories.ViewModels;
+@model CategoryViewModel;
+@{
+    Layout = null;
+}
+
+<html>
+
+<head>
+    <title>Edit a category</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <link rel="stylesheet" href="~/css/EditUser.css" />
+    <!--Include the AddOffer.js file for the is active column to change its value based
+        on the checkbox value
+    -->
+    <script src="~/js/AddOffer.js"></script>
+
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Edit an offer</h2>
+        <a class="btn-link" style="font-size:20px;" asp-action="HomeAdmin" asp-controller="Admin">
+            Return to home admin panel
+        </a>
+
+        <br />
+        <form method="post" asp-action="SubmitEditCategory">
+
+            <h4><div class="text-danger" asp-validation-summary="ModelOnly"></div></h4>
+            <div class="form-group">
+                <label asp-for="CategoryName">Category name</label>
+                <input type="text" asp-for="CategoryName" class="form-control" id="text" placeholder="Enter category name" value="@Model.CategoryName">
+
+                <h4 class="text-danger" role="alert">
+                    <span id="error" asp-validation-for="CategoryName"></span>
+                </h4>
+
+            </div>
+
+            <div class="form-group">
+                <label asp-for="IsActive">Is category active?</label>
+                <input type="checkbox" id="checkbox" onclick="CheckIsPromoValue()" asp-for="IsActive" value="@Model.IsActive">
+                <h4 class="text-danger" role="alert">
+                    <span asp-validation-for="IsActive"></span>
+                </h4>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+        </form>
+    </div>
+
+</body>
+</html>
