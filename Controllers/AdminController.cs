@@ -20,12 +20,12 @@ namespace Sport_Accessories.Controllers
         private readonly AbstractProfilePicture _profilePicture;
         private readonly ApplicationDbContext _dbContext;
         private readonly SignInManager<User> _signInManager;
-        public static User CurrentUser {  get; private set; }
+        public static User? CurrentUser {  get; private set; }
         public IList<User> Users { get; set; }
 
-        public static string UserId {  get; set; }
+        public static string? UserId {  get; set; }
 
-        public static string ProfilePictureFileName {  get; set; }
+        public static string? ProfilePictureFileName {  get; set; }
         public AdminController(UserManager<User> userManager,
                                ILogger<AdminController> logger,
                                IMapper mapper,
@@ -108,7 +108,7 @@ namespace Sport_Accessories.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Authorize(Policy = "DeleteUsers")]
+        [Authorize(Policy = "Delete")]
         public async Task<IActionResult> DeleteUserAsync(string Id)
         {
             User user = await _userManager.FindByIdAsync(Id);
@@ -124,7 +124,7 @@ namespace Sport_Accessories.Controllers
         
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Authorize(Policy = "EditUsers")]
+        [Authorize(Policy = "Edit")]
         public async Task<IActionResult> EditUserAsync(string Id)
         {
             var user = await _userManager.FindByIdAsync(Id);
@@ -145,7 +145,7 @@ namespace Sport_Accessories.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Authorize(Policy = "EditUsers")]
+        [Authorize(Policy = "Edit")]
         public async Task<IActionResult> SubmitEditUserAsync(EditUserViewModel Input)
         {
            
@@ -219,7 +219,7 @@ namespace Sport_Accessories.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        [Authorize(Policy = "CreateUsers")]
+        [Authorize(Policy = "Create")]
         public async Task<IActionResult> AddUserAsync()
         {
             if (User is not null && await _userManager.IsInRoleAsync(CurrentUser, "Admin"))
@@ -232,7 +232,7 @@ namespace Sport_Accessories.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Authorize(Policy = "CreateUsers")]
+        [Authorize(Policy = "Create")]
         public async Task<IActionResult> SubmitAddUserAsync(AddUserViewModel Input)
         {
             if (ModelState.IsValid)
@@ -319,12 +319,21 @@ namespace Sport_Accessories.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "Read")]
         public async Task<IActionResult> ShowOffersAsync()
         {
             IList<Product> products = await _dbContext.Products.Include(p => p.Photo)
                 .ToListAsync();
             return View(products);
+        }
+
+        [Authorize(Policy = "Read")]
+        public async Task<IActionResult> ShowCategoriesAsync()
+        {
+
+            IList<Category> categories = await _dbContext.Categories.ToListAsync();
+
+            return View(categories);
         }
     }
 }
