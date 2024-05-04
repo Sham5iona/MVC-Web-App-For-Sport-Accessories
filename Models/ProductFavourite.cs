@@ -14,7 +14,7 @@ namespace Sport_Accessories.Models
 
         public Favourite Favourite { get; set; }
         private Guid _favourite_id;
-        public Guid FavoriteId
+        public Guid FavouriteId
         {
             get { return _favourite_id;}
             private set { _favourite_id = value;}
@@ -33,6 +33,11 @@ namespace Sport_Accessories.Models
         {
             this.LastModified_20118018 = DateTime.Now;
         }
-
+        public ProductFavourite(Guid product_id, Guid favourite_id)
+        {
+            this.ProductId = product_id;
+            this.LastModified_20118018 = DateTime.Now;
+            this.FavouriteId = favourite_id;
+        }
     }
 }

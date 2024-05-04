@@ -36,5 +36,11 @@ namespace Sport_Accessories.Models
             this.LastModified_20118018 = DateTime.Now;
         }
 
+        public BagProduct(Guid bag_id, Guid product_id)
+        {
+            this.BagId = bag_id;
+            this.ProductId = product_id;
+        }
+
     }
 }
