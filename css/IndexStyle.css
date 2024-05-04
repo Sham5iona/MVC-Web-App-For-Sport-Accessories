@@ -9,6 +9,7 @@ main {
     padding: 20px;
 }
 
+
 section.offers {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
