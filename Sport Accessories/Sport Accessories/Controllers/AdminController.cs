@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +25,7 @@ namespace Sport_Accessories.Controllers
         public static string? UserId {  get; set; }
 
         public static string? ProfilePictureFileName {  get; set; }
+
         public AdminController(UserManager<User> userManager,
                                ILogger<AdminController> logger,
                                IMapper mapper,
@@ -65,14 +65,13 @@ namespace Sport_Accessories.Controllers
                 }
 
                 bool isAdmin = await _userManager.IsInRoleAsync(CurrentUser, "Admin");
-                
-                if (isAdmin)
-                {
 
+                bool isLockedOut = await _userManager.IsLockedOutAsync(CurrentUser);
+
+                if (isAdmin && !isLockedOut)
+                {
                     var result = await _signInManager.PasswordSignInAsync(InputViewModel.UserName,
                                         InputViewModel.Password, false, true);
-
-
                     if (result.Succeeded)
                     {
 
@@ -80,17 +79,21 @@ namespace Sport_Accessories.Controllers
                     }
 
                     ModelState.AddModelError(string.Empty, "Error! Invalid login attempt!");
+                    return View(InputViewModel);
                 }
 
-                ModelState.AddModelError(string.Empty, "Error! Invalid login attempt!");
 
             }
+        
+
+            ModelState.AddModelError(string.Empty, "Error! Invalid login attempt!");
 
             return View(InputViewModel);
         }
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "Read")]
         public async Task<IActionResult> HomeAdminAsync()
         {
 
@@ -237,6 +240,15 @@ namespace Sport_Accessories.Controllers
         {
             if (ModelState.IsValid)
             {
+                if((Input.LockoutEnabled && (Input.LockoutEnd == null ||
+                    Input.AccessFailedCount == 0) || (!Input.LockoutEnabled && 
+                    (Input.LockoutEnd != null || Input.AccessFailedCount > 5))))
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid lockout input!");
+                    return View("AddUser", Input);
+                }
+
+
                 var current_email = await _userManager.FindByEmailAsync(Input.Email);
                 var current_username = await _userManager.FindByNameAsync(Input.UserName);
                 
@@ -325,6 +337,15 @@ namespace Sport_Accessories.Controllers
             IList<Product> products = await _dbContext.Products.Include(p => p.Photo)
                 .ToListAsync();
             return View(products);
+        }
+
+        [Authorize(Policy = "Read")]
+        public async Task<IActionResult> ShowCategoriesAsync()
+        {
+
+            IList<Category> categories = await _dbContext.Categories.ToListAsync();
+
+            return View(categories);
         }
     }
 }

@@ -6,24 +6,24 @@ using Microsoft.AspNetCore.Mvc;
     {
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
-        private readonly ITwoFactorAuthentication _2FA;
+
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<UserController> _logger;
         private readonly AbstractProfilePicture _abstractProfilePicture;
+        private readonly ITwoFactorAuthentication _2FA;
         public UpdateProfilePictureViewModel UpdateProfilePictureViewModel { get; set; }
         public User Current_User { get; set; }
         public UserController(UserManager<User> userManager,
-                              ITwoFactorAuthentication _2FA,
                               SignInManager<User> signInManager,
                               ILogger<UserController> logger,
-                              AbstractProfilePicture abstractProfilePicture)
+                              AbstractProfilePicture abstractProfilePicture,
+                              ITwoFactorAuthentication _2FA)
         {
             this._userManager = userManager;
-            this._2FA = _2FA;
             this._signInManager = signInManager;
             this._logger = logger;
             this._abstractProfilePicture = abstractProfilePicture;
-
+            this._2FA = _2FA;
         }
 
         [HttpGet]
@@ -109,8 +109,10 @@ using Microsoft.AspNetCore.Mvc;
             if (!_signInManager.IsSignedIn(User) && Email is null)
             {
                 return StatusCode(403);
-                
-            }else if (!_signInManager.IsSignedIn(User))
+
+
+            }
+            else if (!_signInManager.IsSignedIn(User))
 
             {
                 Current_User = await _userManager.FindByEmailAsync(Email);

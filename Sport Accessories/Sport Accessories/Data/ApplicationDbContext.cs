@@ -18,6 +18,10 @@ namespace Sport_Accessories.Data
         public DbSet<Favourite> Favourites { get; set; }
         public DbSet<Photo> Photos { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<ProductFavourite> ProductFavourite { get; set; }
+
+        public DbSet<BagProduct> BagProducts { get; set; }
+
 
         //With this empty constructor, I leave the services from the Program.cs file
         //to connect to the database without the need to override the
@@ -53,22 +57,27 @@ namespace Sport_Accessories.Data
                 new { bp.ProductId, bp.BagId });
 
             builder.Entity<ProductFavourite>().HasKey(pf =>
-                new { pf.ProductId, pf.FavoriteId });
+                new { pf.ProductId, pf.FavouriteId });
 
-            builder.Entity<Product>().HasMany(p => p.BagProducts)
-                .WithOne(bp => bp.Product)
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<BagProduct>().HasOne(bp => bp.Product)
+                                        .WithMany(p => p.BagProducts)
+                                        .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<ProductFavourite>().HasOne(pf => pf.Product)
+                                              .WithMany(p => p.ProductFavourites)
+                                              .OnDelete(DeleteBehavior.NoAction);
 
             builder.Entity<Bag>().HasMany(b => b.BagProducts).WithOne(bp => bp.Bag)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Entity<Product>().HasMany(p => p.ProductFavourites)
-                .WithOne(pf => pf.Product)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Entity<Bag>().HasIndex(b => b.UserId).IsUnique(false);
+
+            
             builder.Entity<Favourite>().HasMany(f => f.ProductFavourites)
                 .WithOne(pf => pf.Favourite)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Favourite>().HasIndex(f => f.UserId).IsUnique(false);
 
             builder.Entity<Product>().HasOne(p => p.User).WithMany(u => u.Products);
 
@@ -88,8 +97,8 @@ namespace Sport_Accessories.Data
             builder.Entity<User>().ToTable(tb => tb.HasTrigger("tg_Users_Delete"));
 
         }
-        public DbSet<Sport_Accessories.Models.ProductFavourite> ProductFavourite { get; set; } = default!;
 
+        public DbSet<Sport_Accessories.Models.ProductFavourite> ProductFavourite { get; set; } = default!;
 
     }
 }
