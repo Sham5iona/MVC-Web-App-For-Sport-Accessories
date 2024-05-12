@@ -1,0 +1,54 @@
+﻿@using Sport_Accessories.ViewModels;
+@model CategoryViewModel;
+@{
+    ViewData["Title"] = "Add a category";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!-- Your custom JavaScript file inclusion -->
+    <script src="~/js/EditUser.js"></script>
+    <link rel="stylesheet" href="~/css//EditUser.css" />
+
+
+</head>
+
+<body>
+
+    <div class="container">
+        <h2 class="text-center mb-4">Add a category</h2>
+        <a class="btn-link" style="font-size:20px;display:flex;align-items:center;justify-content:center" asp-action="HomeAdmin">Return to home admin panel</a>
+
+        <form method="post" asp-action="SubmitAddCategory">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label for="categoryName">Category name</label>
+                <input asp-for="CategoryName" class="form-control" id="categoryName" placeholder="Enter category name">
+                <span asp-validation-for="CategoryName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group custom-control custom-checkbox">
+                <input id="isActive" onclick="Check2FAValue()" type="checkbox" class="custom-control-input" asp-for="IsActive">
+                <label class="custom-control-label" for="twoFactorEnabled">Is category active?</label>
+                <span asp-validation-for="IsActive" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+
+        </form>
+
+    </div>
+</body>
+
+</html>

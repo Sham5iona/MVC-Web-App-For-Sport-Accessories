@@ -1,4 +1,6 @@
+
 ﻿using Microsoft.AspNetCore.Identity;
+
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Sport_Accessories.Areas.Identity.Models;
@@ -25,6 +27,7 @@ namespace Sport_Accessories
             {
 
                 options.SignIn.RequireConfirmedAccount = true;
+
                 options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequireDigit = true;
                 options.Password.RequireUppercase = true;
@@ -32,6 +35,7 @@ namespace Sport_Accessories
                 options.Password.RequiredUniqueChars = 1;
                 options.Lockout.AllowedForNewUsers = false;
                 options.Lockout.MaxFailedAccessAttempts = 5;
+
 
             })
                 .AddDefaultTokenProviders()
@@ -96,6 +100,7 @@ namespace Sport_Accessories
 
 
             var app = builder.Build();
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

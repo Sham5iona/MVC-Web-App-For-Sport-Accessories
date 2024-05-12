@@ -1,0 +1,32 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Sport_Accessories.Areas.Identity.Models
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@{
+    var user = await UserManager.GetUserAsync(this.User);
+}
+<ul class="navbar-nav">
+
+@if (SignInManager.IsSignedIn(User) && user != null)
+{
+    <li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="User" asp-action="ShowUser">
+                <img src = "~/images/@user.FileName" style="width:60px;height:60px;border-radius:150px;" />
+        </a>
+    </li>
+    <li class="nav-item">
+        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <button style="font-size:25px;" type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+        </form>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+            <a style="font-size:25px;" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+    </li>
+    <li class="nav-item">
+            <a style="font-size:25px;" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    </li>
+}
+</ul>

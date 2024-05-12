@@ -30,6 +30,7 @@ namespace Sport_Accessories.Models
         {
             get { return _created_at; }
             private set { _created_at = DateTime.Now; }
+
         }
 
         public Log_20118018() // emprty constructor for EFCore

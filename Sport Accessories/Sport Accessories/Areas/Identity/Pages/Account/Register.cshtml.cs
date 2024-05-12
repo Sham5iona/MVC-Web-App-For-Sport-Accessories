@@ -108,6 +108,7 @@ namespace Sport_Accessories.Areas.Identity.Pages.Account
                         await _userManager.SetLockoutEnabledAsync(user, true);
 
                         if (result.Succeeded && role_result.Succeeded)
+
                         {
 
                             _logger.LogInformation("User created a new account with password.");

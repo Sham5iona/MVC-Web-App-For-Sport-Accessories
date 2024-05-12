@@ -32,6 +32,7 @@ namespace Sport_Accessories.Models
         {
             get { return _updated_at; }
             private set { _updated_at = DateTime.Now; }
+
         }
 
         //insert a value when its changed or added
@@ -40,7 +41,9 @@ namespace Sport_Accessories.Models
         public DateTime LastModified_20118018
         {
             get { return _last_modified_20118018; }
+
             private set { _last_modified_20118018 = DateTime.Now; }
+
         }
 
         public Bag() //empty constructor for EFCore
@@ -55,6 +58,8 @@ namespace Sport_Accessories.Models
             this.UpdatedAt = DateTime.Now;
             this.LastModified_20118018 = DateTime.Now;
             this.UserId = user_id;
+            this.LastModified_20118018 = DateTime.Now;
+            this.UpdatedAt = DateTime.Now;
         }
 
     }
