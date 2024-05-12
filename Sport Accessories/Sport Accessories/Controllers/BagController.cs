@@ -17,6 +17,7 @@ namespace Sport_Accessories.Controllers
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
+        public int Count {  get; set; }
         public BagController(ApplicationDbContext dbContext,
                              UserManager<User> userManager,
                              IMapper mapper)
@@ -99,28 +100,46 @@ namespace Sport_Accessories.Controllers
             return RedirectToAction("ShowBag");
         }
 
-        public async Task<IActionResult> PaymentAsync()
+        public async Task<IActionResult> PaymentAsync(List<Guid> ProductIds,
+                                                      List<int> Counts)
         {
-            IEnumerable<BagProduct> products_in_bag = await _dbContext.BagProducts
-                                                     .Include(bp => bp.Product)
-                                                     .ToListAsync();
-            decimal total_price = 0;
-            foreach(var bag_product in products_in_bag)
+            // Fetch bag products from the database based on the provided product IDs
+            var bagProducts = await _dbContext.BagProducts
+                .Include(bp => bp.Product)
+                .Where(bp => ProductIds.Contains(bp.ProductId))
+                .ToListAsync();
+
+            decimal totalPrice = 0;
+
+            // Iterate over the fetched bag products and calculate the total price
+            for (int i = 0; i < bagProducts.Count; i++)
             {
-                if(bag_product.Product.NewPrice is null)
+                var bagProduct = bagProducts[i];
+                var count = Counts[i]; // Get the count corresponding to the current bag product
+
+                // Check if the bag product's price is null or new price is set
+                decimal price = bagProduct.Product.Price;
+                if (bagProduct.Product.NewPrice != null)
                 {
-                    total_price += bag_product.Product.Price;
+                    price = bagProduct.Product.NewPrice.Value;
                 }
-                else
-                {
-                    total_price += bag_product.Product.NewPrice.Value;
-                }
-                
+
+                // Multiply the price by the count and add it to the total price
+                totalPrice += price * count;
             }
-            PaymentViewModel paymentViewModel = new PaymentViewModel();
-            paymentViewModel.TotalPrice = total_price;
+
+            // Create a view model to pass the total price to the view
+            var paymentViewModel = new PaymentViewModel
+            {
+                TotalPrice = totalPrice
+            };
+
             return View(paymentViewModel);
         }
+
+
+
+
 
         public IActionResult Pay(PaymentViewModel Input)
         {
@@ -128,7 +147,7 @@ namespace Sport_Accessories.Controllers
             {
                 return View("Successfull_Payment");
             }
-            
+
             return View("Payment", Input);
         }
     }
