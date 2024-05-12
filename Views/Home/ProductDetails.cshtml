@@ -1,0 +1,155 @@
+﻿@model Product
+@using Microsoft.AspNetCore.Identity
+@using Sport_Accessories.Areas.Identity.Models
+@inject UserManager<User> UserManager;
+
+@{
+    ViewData["Title"] = "Product Details";
+    var user = await UserManager.GetUserAsync(User);
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="~/js/ProductDetails.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <h1 class="mt-5 mb-4">
+            <form method="post" asp-controller="Bag" asp-action="AddToBag">
+
+            Product Details 
+                @{
+                    if (user is not null)
+                    {
+                        <input type="hidden" name="Id" value="@Model.ProductId" />
+                        <button type="submit" style="background: none; border: none; padding: 0; margin: 0; cursor: pointer;">
+                            <i class="fa fa-shopping-cart" style="font-size:36px"></i>
+                        </button>
+                    }
+                }
+            </form>  
+            <span><h3 style="color:red;">@TempData["BagMessage"]</h3></span>
+
+            @{
+                if(user is not null){
+                    <form method="post" asp-action="AddToFavourites" asp-controller="Favourite">
+
+                    <input type="hidden" value="@Model.ProductId" name="Id" />
+
+                        <button style="background: none; border: none; padding: 0; margin: 0; cursor: pointer;"
+                                type="submit" onclick="ChangeFavouriteEmoji()">
+                            <i id="favourite" class="fa fa-star-o"
+                               style="font-size:36px"></i>
+
+                            @{
+                                foreach (var product in Model.ProductFavourites)
+                                {
+
+                                    if (product.ProductId == Model?.ProductId)
+                                    {
+
+                                        <script>
+                                            let element = document.getElementById("favourite");
+                                            element.classList.remove("fa-star-o");
+                                            element.classList.add("fa-star");
+                                            element.style.color = "gold";
+                                        </script>
+                                    }
+                                }
+                                <script>
+                                    let element = document.getElementById("favourite");
+                                    element.style.color = "";
+                                </script>
+                        }
+
+                         </button>
+                    
+
+            </form>
+
+           
+        }
+    }
+
+        </h1>
+
+        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+
+        <a class="btn-link" asp-action="Index"><h4>Return to home page</h4></a>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Product:</th>
+                            <td>@Model.ProductName</td>
+                        </tr>
+                        <tr>
+                            <th>Category:</th>
+                            <td>@Model.Category.CategoryName</td>
+                        </tr>
+
+                        <tr>
+                            <th>Image</th>
+                            <td>
+                            <img src="~/offers_images/@Model.Photo.FileName" class="product-image" alt="Product Image" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Description:</th>
+                            <td>@Model.ProductDescription</td>
+                        </tr>
+                        <tr>
+                            <th>Price:</th>
+                            <td>@Model.Price</td>
+                        </tr>
+
+                        <tr>
+                            <th>Viewers:</th>
+                            <td>@Model.Viewers</td>
+                        </tr>
+
+                        <tr>
+                            <th>User email:</th>
+                            <td>@Model.User.Email</td>
+                        </tr>
+
+                        <tr>
+                            <th>Username:</th>
+                            <td>@Model.User.UserName</td>
+                        </tr>
+                        <tr>
+                            <th>Is in promotion?</th>
+                            <td>@Model.IsPromo</td>
+                        </tr>
+
+                        <tr>
+                            <th>New price:</th>
+                            <td>@Model.NewPrice</td>
+                        </tr>
+                        <tr>
+                            <th>Updated at:</th>
+                            <td>@Model.UpdatedAt</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+</body>
+</html>
+<style>
+    .product-image {
+        max-width: 50%;
+        height: auto;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+</style>
