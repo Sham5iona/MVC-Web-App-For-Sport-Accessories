@@ -1,0 +1,32 @@
+﻿@page
+@using Sport_Accessories.ViewModels
+@model Add2FactorAuthenticationModel
+@{
+    ViewData["Title"] = "Two-factor authentication";
+}
+
+<h2>Enter your email.</h2>
+<hr />
+<div class="row">
+    <h2>
+        Note that after sending the token, you will be signed out and should login
+        to add the two-factor authentication option!
+    </h2>
+    <hr />
+    <div class="col-md-4">
+
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="form-floating mb-3">
+                <input asp-for="@Model.Input.Email" class="form-control" placeholder="name@example.com" value="@Model.Email" />
+                <label asp-for="@Model.Input.Email" class="form-label"></label>
+                <span asp-validation-for="@Model.Input.Email" class="text-danger"></span>
+            </div>
+            <button type="submit" class="w-100 btn btn-lg btn-primary">Send token</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

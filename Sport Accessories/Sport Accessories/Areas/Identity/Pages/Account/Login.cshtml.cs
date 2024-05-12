@@ -66,6 +66,7 @@ namespace Sport_Accessories.Areas.Identity.Pages.Account
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
 
+        
         public async Task OnGetAsync(string returnUrl = null)
         {
             if (!string.IsNullOrEmpty(ErrorMessage))
@@ -74,15 +75,13 @@ namespace Sport_Accessories.Areas.Identity.Pages.Account
             }
             if (returnUrl is not null && returnUrl.Contains("Admin"))
             {
-                ModelState.AddModelError(string.Empty, "Admin login is forbidden!");
+                ModelState.AddModelError(string.Empty, "Admin or Super Admin" +
+                                                       " login is forbidden!");
                 return;
             }
-            returnUrl ??= Url.Content("~/");
 
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             ReturnUrl = returnUrl;
         }
@@ -97,9 +96,6 @@ namespace Sport_Accessories.Areas.Identity.Pages.Account
             }
 
             returnUrl ??= Url.Content("~/");
-
-
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             var user = await _userManager.FindByNameAsync(Input.Username);
 
@@ -132,16 +128,15 @@ namespace Sport_Accessories.Areas.Identity.Pages.Account
                                 DateTime.UtcNow.Add(defaultLockoutTimeSpan),
                                 TimeZoneInfo.Local);
 
-                            TimeSpan difference = lockoutEndLocalTime - DateTime.Now;
+                            if (user.LockoutEnd.HasValue && 
+                                DateTime.Now < user.LockoutEnd.Value.DateTime)
 
-                            if (user.LockoutEnd is not null &&
-                                difference > TimeSpan.Zero)
                             {
-                                DateTimeOffset = user.LockoutEnd;
+                                DateTimeOffset = user.LockoutEnd.Value;
 
                                 user.AccessFailedCount = 0;
 
-                                //reset the access failed count after lockout
+                                // Reset the access failed count after lockout
                                 await _userManager.UpdateAsync(user);
 
                                 await _signInManager.SignOutAsync();
@@ -149,21 +144,22 @@ namespace Sport_Accessories.Areas.Identity.Pages.Account
                                 return RedirectToPage("./Lockout", new { DateTimeOffset });
                             }
 
-                            await _userManager.SetLockoutEndDateAsync(user,
-                                                DateTime.Now.AddMinutes(3));
+                            await _userManager.SetLockoutEndDateAsync(user, lockoutEndLocalTime);
 
-                            DateTimeOffset = user.LockoutEnd;
+                            DateTimeOffset = lockoutEndLocalTime;
 
                             user.AccessFailedCount = 0;
 
-                            //reset the access failed count after lockout
+                            // Reset the access failed count after lockout
                             await _userManager.UpdateAsync(user);
 
                             await _signInManager.SignOutAsync();
 
                             return RedirectToPage("./Lockout", new { DateTimeOffset });
-
                         }
+
+
+
                         if (result.Succeeded)
                         {
                             _logger.LogInformation("User logged in.");

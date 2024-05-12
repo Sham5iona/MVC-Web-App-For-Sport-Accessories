@@ -49,9 +49,11 @@ namespace Sport_Accessories.Areas.Identity.Pages.Account.Manage
                 TempData["Error2FA"]  = "Error! Cannot disable 2FA because " +
                 "it has already been!";
 
+                return RedirectToAction("ShowUser", "User");
+
             }
 
-            return RedirectToAction("ShowUser", "User");
+            return Page();
         }
         
 
@@ -71,6 +73,7 @@ namespace Sport_Accessories.Areas.Identity.Pages.Account.Manage
 
             _logger.LogInformation("User with ID '{UserId}' has disabled 2fa.", _userManager.GetUserId(User));
             StatusMessage = "2fa has been disabled. You can reenable 2fa when you setup an authenticator app";
+            
             return RedirectToAction("ShowUser", "User");
         }
     }

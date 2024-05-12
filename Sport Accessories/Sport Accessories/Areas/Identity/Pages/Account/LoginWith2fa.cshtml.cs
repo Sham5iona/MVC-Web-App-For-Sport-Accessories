@@ -12,6 +12,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Sport_Accessories.Areas.Identity.Models;
+using Sport_Accessories.ViewModels;
+using Sport_Accessories.Services;
 
 namespace Sport_Accessories.Areas.Identity.Pages.Account
 {
@@ -75,6 +77,7 @@ namespace Sport_Accessories.Areas.Identity.Pages.Account
             public bool RememberMachine { get; set; }
         }
 
+        
         public async Task<IActionResult> OnGetAsync(string email, bool rememberMe, string returnUrl = null)
         {
             // Ensure the user has gone through the username & password screen first
@@ -89,6 +92,8 @@ namespace Sport_Accessories.Areas.Identity.Pages.Account
 
             return Page();
         }
+
+
 
         public async Task<IActionResult> OnPostAsync(bool rememberMe, string returnUrl = null)
         {
