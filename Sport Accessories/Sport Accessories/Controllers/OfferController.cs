@@ -7,6 +7,7 @@ using AutoMapper;
 using Sport_Accessories.Models;
 using Sport_Accessories.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Sport_Accessories.Controllers
 {
@@ -35,6 +36,7 @@ namespace Sport_Accessories.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> AddOfferAsync()
         {
 
@@ -57,6 +59,7 @@ namespace Sport_Accessories.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> AddOfferAsync(OfferViewModel Input)
         {
             //Check if all input data is valid
@@ -70,10 +73,12 @@ namespace Sport_Accessories.Controllers
                 var product = _mapper.Map<Product>(Input);
                 product.CategoryId = category_id;
                 product.UserId = user.Id;
+
                 if (Input.IsPromo && Input.NewPrice != null)
                 {
                     product.NewPrice = Input.NewPrice;
                 }
+
                 Photo photo = new Photo();
 
                 product.PhotoId = await _offerService.AddProductImageAsync(
@@ -104,6 +109,7 @@ namespace Sport_Accessories.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Delete")]
         public async Task<IActionResult> DeleteOfferAsync(Guid Id)
         {
             var product = await _dbcontext.Products.FirstOrDefaultAsync(p =>
@@ -117,6 +123,7 @@ namespace Sport_Accessories.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Edit")]
         public async Task<IActionResult> EditOfferAsync(Guid Id)
         {
             //get the product by the provided Id
@@ -136,6 +143,7 @@ namespace Sport_Accessories.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Edit")]
         public async Task<IActionResult> SubmitEditOfferAsync(OfferViewModel Input)
         {
             if (ModelState.IsValid)
