@@ -110,18 +110,49 @@ namespace Sport_Accessories.Controllers
             return View("Index", products);
         }
 
-        public async Task<IActionResult> ProductDetailsAsync(Guid? Id)
+        public async Task<IActionResult> ProductDetailsAsync(Guid? Id,
+                                                             string? error_message)
         {
+
             if (TempData["ProductId"] is not null)
             {
                 Id = Guid.Parse(TempData["ProductId"].ToString());
             }
+
+            if(error_message is not null)
+            {
+
+                TempData["BagMessage"] = error_message;
+
+                string product_id = TempData["ProductIdFromBag"].ToString();
+
+                var product_to_pass = await _dbContext.Products.Include(p => p.Category)
+                                .Include(p => p.Photo)
+                                .Include(p => p.User)
+                                .Include(p => p.ProductFavourites)
+                                .FirstOrDefaultAsync(p =>
+                                p.ProductId.ToString() == product_id);
+
+                return View(product_to_pass);
+            }
+
+            var user = await _userManager.GetUserAsync(User);
 
             var product = await _dbContext.Products.Include(p => p.Category)
                     .Include(p => p.Photo)
                     .Include(p => p.User)
                     .Include(p => p.ProductFavourites)
                     .FirstOrDefaultAsync(p => p.ProductId == Id);
+
+            //Here is the logic for retrieving the viewers of the offer
+            //and to prevent from incrementing the viewers if the offer
+            //publisher is viewing his own offer
+            if (user != null && user.Id != product?.UserId)
+            {
+                product.Viewers += 1;
+
+                await _dbContext.SaveChangesAsync();
+            }
 
             if(product is null)
             {

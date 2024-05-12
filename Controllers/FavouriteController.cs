@@ -26,13 +26,13 @@ namespace Sport_Accessories.Controllers
 
             var product = await _dbContext.Products.FindAsync(Id);
 
-            var current_favourite = await _dbContext.Favourites
-                            .FirstOrDefaultAsync(pf => pf.UserId == user.Id);
+            var current_product_favourite = await _dbContext.ProductFavourite
+                        .FirstOrDefaultAsync(pf => pf.ProductId == product.ProductId);
 
             // Store the product ID in TempData
             TempData["ProductId"] = product.ProductId;
 
-            if (current_favourite == null)
+            if (current_product_favourite == null)
             {
                 Favourite favourite = new Favourite(user.Id);
 
@@ -55,7 +55,11 @@ namespace Sport_Accessories.Controllers
 
             var product_favourite = await _dbContext.ProductFavourite
                         .FirstOrDefaultAsync(pf => pf.ProductId == Id &&
-                        pf.FavouriteId == current_favourite.FavouriteId);
+                        pf.FavouriteId == current_product_favourite.FavouriteId);
+
+            var current_favourite = await _dbContext.Favourites
+                    .FirstOrDefaultAsync(f =>
+                    f.FavouriteId == product_favourite.FavouriteId);
 
             _dbContext.ProductFavourite.Remove(product_favourite);
 
@@ -66,5 +70,46 @@ namespace Sport_Accessories.Controllers
             return RedirectToAction("ProductDetails", "Home");
         }
 
+        public async Task<IActionResult> ShowFavouritesAsync()
+        {
+            IEnumerable<ProductFavourite> productFavourites = await _dbContext
+                        .ProductFavourite
+                        .Include(pf => pf.Product)
+                        .ThenInclude(p => p.Category)
+                        .Include(pf => pf.Product)
+                        .ThenInclude(p => p.Photo)
+                        .Include(pf => pf.Favourite)
+                        .ToListAsync();
+
+            return View(productFavourites);
+
+        }
+
+        public async Task<IActionResult> RemoveFavouriteAsync(Guid FavouriteId)
+        {
+            var product_favourite = await _dbContext.ProductFavourite
+                                .FirstOrDefaultAsync(pf => pf.FavouriteId == FavouriteId);
+
+            var favourite = await _dbContext.Favourites.FirstOrDefaultAsync(f =>
+                                f.FavouriteId == FavouriteId);
+
+            _dbContext.Favourites.Remove(favourite);
+
+            _dbContext.ProductFavourite.Remove(product_favourite);
+
+            await _dbContext.SaveChangesAsync();
+
+            IEnumerable<ProductFavourite> productFavourites = await _dbContext
+                        .ProductFavourite
+                        .Include(pf => pf.Product)
+                        .ThenInclude(p => p.Category)
+                        .Include(pf => pf.Product)
+                        .ThenInclude(p => p.Photo)
+                        .Include(pf => pf.Favourite)
+                        .ToListAsync();
+
+            return View("ShowFavourites", productFavourites);
+
+        }
     }
 }
