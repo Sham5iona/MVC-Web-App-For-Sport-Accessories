@@ -97,5 +97,8 @@ namespace Sport_Accessories.Data
             builder.Entity<User>().ToTable(tb => tb.HasTrigger("tg_Users_Delete"));
 
         }
+
+        public DbSet<Sport_Accessories.Models.ProductFavourite> ProductFavourite { get; set; } = default!;
+
     }
 }

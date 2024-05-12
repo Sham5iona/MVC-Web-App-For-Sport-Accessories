@@ -1,0 +1,173 @@
+﻿@model IEnumerable<ProductFavourite>;
+@{
+    ViewData["Title"] = "Favourites";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        .product-image {
+            max-width: 30%;
+            height: auto;
+            border-radius: 5px;
+            float:left;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-details {
+            display: flex;
+            max-width: 60%;
+        }
+
+        .remove-button {
+            font-size:30px;
+            border: none;
+            background:none;
+            float:right;
+            cursor: pointer;
+        }
+
+        /* Styles for the scroll to top button */
+        #scrollTopBtn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 99;
+            font-size: 18px;
+            border: none;
+            outline: none;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 50%;
+        }
+
+    </style>
+
+    </head>
+<body>
+
+    <div class="container">
+        <h1 class="mt-5 mb-4">
+            Product Details 
+            </h1>
+
+        <a class="btn-link" asp-action="Index" asp-controller="Home"><h4>Return to home page</h4></a>
+
+            @{
+                if(Model.Count() > 0){
+                    foreach(var productFavourite in Model)
+                    {
+
+                    <div class="card-body">
+                    <table class="table table-bordered">
+                    <tbody>
+                            <tr>
+                                <td colspan="2">
+                                    <form method="post" asp-action="RemoveFavourite">
+                                    <input type="hidden" name="FavouriteId" value="@productFavourite.Favourite.FavouriteId" />
+                                        <input type="submit" class="remove-button" value="&#10060;" />
+                                    </form>
+                                </td>
+                            </tr>
+
+                        <tr>
+                            <th>Product:</th>
+                            <td>@productFavourite.Product.ProductName</td>
+                        </tr>
+                        <tr>
+                            <th>Category:</th>
+                            <td>@productFavourite.Product.Category.CategoryName</td>
+                        </tr>
+
+                        <tr>
+                            <th>Image</th>
+                            <td>
+                                        <form method="post" asp-action="ProductDetails" asp-controller="Home">
+                                            <input type="hidden" 
+                                            value="@productFavourite.Product.ProductId" name="Id" />
+                                            <button type="submit" style="background: none; border: none; padding: 0; margin: 0; cursor: pointer;">
+                                                <img class="product-image"
+                                                src="~/offers_images/@productFavourite.Product.Photo.FileName" alt="product image">
+                                            </button>
+                                        </form>
+                                    </td>
+                        </tr>
+
+                        <tr>
+                            <th>Description:</th>
+                            <td>@productFavourite.Product.ProductDescription</td>
+                        </tr>
+                        <tr>
+                        <tr>
+                            <th>Price currency:</th>
+                            <td>@productFavourite.Product.Currency</td>
+                        </tr>
+                        <tr>
+                            <th>Price:</th>
+                            <td>@productFavourite.Product.Price</td>
+                        </tr>
+
+                        <tr>
+                            <th>Viewers:</th>
+                            <td>@productFavourite.Product.Viewers</td>
+                        </tr>
+                        <tr>
+                            <th>Is in promotion?</th>
+                            <td>@productFavourite.Product.IsPromo</td>
+                        </tr>
+
+                        <tr>
+                            <th>New price:</th>
+                            <td>@productFavourite.Product.NewPrice</td>
+                        </tr>
+                        <tr>
+                            <th>Updated at:</th>
+                            <td>@productFavourite.Product.UpdatedAt</td>
+                        </tr>
+                    </tbody>
+                </table>
+                    </div>
+                }
+            }
+            else
+            {
+                <h1 style="padding-top:100px;">The favourites list is empty!</h1>
+            }
+        }
+
+    </div>
+    <!-- Scroll to top button -->
+    <button onclick="scrollToTop()" id="scrollTopBtn" title="Go to top"><i class="fa fa-chevron-up"></i></button>
+    <script>
+        // Get the button
+        var scrollToTopButton = document.getElementById("scrollTopBtn");
+
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.onscroll = function () { scrollFunction() };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                scrollToTopButton.style.display = "block";
+            } else {
+                scrollToTopButton.style.display = "none";
+            }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function scrollToTop() {
+            document.body.scrollTop = 0; // For Safari
+            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+        }
+    </script>
+</body>
+</html>

@@ -25,7 +25,9 @@ namespace Sport_Accessories.Areas.Identity.Models
         public DateTime LastModified_20118018
         {
             get { return _last_modified_20118018; }
+
             private set { _last_modified_20118018 = value; }
+
         }
 
         public User(string username, string password,
@@ -48,4 +50,5 @@ namespace Sport_Accessories.Areas.Identity.Models
             this.FileName = filename;
         }
     }
+
 }

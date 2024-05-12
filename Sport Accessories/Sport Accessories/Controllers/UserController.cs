@@ -1,15 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Sport_Accessories.Areas.Identity.Models;
-using Sport_Accessories.Services;
-using Sport_Accessories.ViewModels;
 
-namespace Sport_Accessories.Controllers
-{
-    [Authorize(Roles = "User")]
     public class UserController : Controller
     {
+        private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
 
         private readonly SignInManager<User> _signInManager;
@@ -106,7 +101,6 @@ namespace Sport_Accessories.Controllers
 
             return View("ShowUser", username);
 
-
         }
 
         [HttpGet]
@@ -116,8 +110,10 @@ namespace Sport_Accessories.Controllers
             {
                 return StatusCode(403);
 
+
             }
             else if (!_signInManager.IsSignedIn(User))
+
             {
                 Current_User = await _userManager.FindByEmailAsync(Email);
             }
@@ -154,7 +150,9 @@ namespace Sport_Accessories.Controllers
                                          UpdateProfilePictureViewModel Input)
         {
             var user = await _userManager.GetUserAsync(this.User);
+
             if (await _abstractProfilePicture.ChangeProfilePictureAsync(Input.FormFile, user))
+
             {
                 _logger.LogInformation("Successfully updated the profile picture!");
                 return LocalRedirect("/User/ShowUser");
@@ -168,4 +166,6 @@ namespace Sport_Accessories.Controllers
         }
 
     }
+
 }
+

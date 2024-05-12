@@ -1,0 +1,146 @@
+﻿@using Sport_Accessories.Data;
+@model IEnumerable<Product>;
+@inject ApplicationDbContext dbContext;
+@{
+    ViewData["Title"] = "Home Page";
+    var categories = dbContext.Categories.Where(c => c.IsActive);
+    
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sport Accessories</title>
+    <link rel="stylesheet" href="~/css/IndexStyle.css"> <!-- Include your external CSS file -->
+</head>
+
+<body>
+
+    <main>
+
+        <a id="addOfferBtn" asp-action="AddOffer" asp-controller="Offer" class="btn btn-primary">
+            Add an offer
+        </a>
+
+        <div class="filter-options">
+            <div class="search-form">
+                <form method="post" asp-action="SearchByProductName" asp-controller="Home">
+                    <input type="text" name="searchTerm" placeholder="Search by Product Name or Category">
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+            <div class="ordering-options">
+                <form method="post" asp-action="SearchByCategoryName" asp-controller="Home">
+                    <select name="orderBy">
+                        <option value="">Select a category</option>
+                        @{
+                            foreach (var category in categories.Select(c => c.CategoryName))
+                            {
+                                <option value="@category" selected="@(category == ViewBag.Category ? "selected" : null)">@category</option>
+
+                            }
+                        }
+                    </select>
+                    <button type="submit">Filter</button>
+                </form>
+                </div>
+                <div class="ordering-options">
+                <form method="post" asp-action="Order" asp-controller="Home">
+                    <select name="order">
+                        @{
+                            <option value="Asc" selected="@("Asc" == ViewBag.Order ? "selected" : null)">Ascending</option>
+                            <option value="Desc" selected="@("Desc" == ViewBag.Order ? "selected" : null)">Descending</option>
+
+                        }
+                    </select>
+                    <button type="submit">Order by date</button>
+                </form>
+                </div>
+            </div>
+
+        <section class="offers">
+            @{
+                if (Model.Count() > 0)
+                {
+                    foreach (var product in Model)
+                    {
+                        <div class="offer">
+                            <h3>@product.ProductName</h3>
+                            <h5>Category: @product.Category.CategoryName</h5>
+                            <form method="post" asp-action="ProductDetails">
+                                <input type="hidden" value="@product.ProductId" name="Id" />
+                                <button type="submit" style="background: none; border: none; padding: 0; margin: 0; cursor: pointer;">
+                                        <img src="~/offers_images/@product.Photo.FileName" alt="product image">
+                                </button>
+                            </form>
+
+                            <form id="productForm2" method="post" asp-action="ProductDetails">
+                                <input type="hidden" value="@product.ProductId" name="Id" />
+                                <button type="submit" style="background: none; border: none; padding: 0; margin-top: 10px; cursor: pointer;">
+                                    <a class="btn btn-primary">
+                                        View Details
+                                    </a>
+                                </button>
+                            </form>
+                            </div>
+                    }
+                }
+                else
+                {
+                    <h1>There are no offers!</h1>
+                }
+            }
+        </section>
+    </main>
+
+</body>
+</html>
+
+<!--Add the style of the web page-->
+<style>
+    .filter-options {
+        display: flex;
+        justify-content: space-evenly;
+        margin-bottom: 50px;
+    }
+
+    .search-form, .ordering-options {
+        display: flex;
+        align-items: center;
+    }
+
+        .search-form input[type="text"] {
+            padding: 8px;
+            width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        .search-form button, .ordering-options button {
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .ordering-options select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        .ordering-options button {
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+</style>
