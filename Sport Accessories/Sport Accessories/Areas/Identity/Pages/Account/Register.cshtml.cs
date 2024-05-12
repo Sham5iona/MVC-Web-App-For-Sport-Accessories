@@ -104,6 +104,8 @@ namespace Sport_Accessories.Areas.Identity.Pages.Account
                         var result = await _userManager.CreateAsync(user, Input.Password);
                         
                         var role_result = await _userManager.AddToRoleAsync(user, "User");
+                        
+                        await _userManager.SetLockoutEnabledAsync(user, true);
 
                         if (result.Succeeded && role_result.Succeeded)
 

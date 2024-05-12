@@ -33,7 +33,8 @@ namespace Sport_Accessories.Models
 
         public ProductFavourite() //empty constructor for EFCore
         {
-         this.LastModified_20118018 = DateTime.Now;
+
+            this.LastModified_20118018 = DateTime.Now;
 
         }
 

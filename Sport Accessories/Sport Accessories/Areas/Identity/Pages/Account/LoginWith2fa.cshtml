@@ -9,7 +9,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post" asp-route-returnUrl="@Model.ReturnUrl">
+        <form method="post" asp-route-returnUrl="@Model.ReturnUrl" asp-route-email="@Model.Email">
             <input asp-for="RememberMe" type="hidden" />
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <div class="form-floating mb-3">
@@ -28,16 +28,16 @@
             </div>
             <div style="margin:40px;">
                 <h5>
-                    <a asp-route-email="@Model.Email" class="card-text" style="text-decoration:none;"
-                        asp-controller="User" asp-action="Add2FactorAuthentication">
+                    <a asp-page="Add2FactorAuthentication" asp-route-email="@Model.Email" class="card-text" style="text-decoration:none;">
                         Token expired? Send another one!
                     </a>
+
                 </h5>
             </div>
         </form>
         
 </div>
-
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

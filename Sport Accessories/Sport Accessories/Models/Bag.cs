@@ -48,12 +48,15 @@ namespace Sport_Accessories.Models
 
         public Bag() //empty constructor for EFCore
         {
-            
+            this.UpdatedAt = DateTime.Now;
+            this.LastModified_20118018 = DateTime.Now;
         }
 
         public Bag(string user_id)
         {
             this.BagProducts = new List<BagProduct>();
+            this.UpdatedAt = DateTime.Now;
+            this.LastModified_20118018 = DateTime.Now;
             this.UserId = user_id;
             this.LastModified_20118018 = DateTime.Now;
             this.UpdatedAt = DateTime.Now;

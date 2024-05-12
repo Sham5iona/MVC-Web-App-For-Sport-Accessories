@@ -26,7 +26,8 @@ namespace Sport_Accessories.Areas.Identity.Models
         {
             get { return _last_modified_20118018; }
 
-            private set { _last_modified_20118018 = DateTime.Now; }
+            private set { _last_modified_20118018 = value; }
+
         }
 
         public User(string username, string password,
@@ -37,8 +38,8 @@ namespace Sport_Accessories.Areas.Identity.Models
             this.FileName = file_name_url;
             this.UserName = username;
             this.Email = email;
-            this.LastModified_20118018 = DateTime.Now;
             this.AccessFailedCount = access_failed_count;
+            this.LastModified_20118018 = DateTime.Now;
         }
         public User() //empty constructor for EFCore
         {

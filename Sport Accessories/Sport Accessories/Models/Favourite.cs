@@ -47,7 +47,8 @@ namespace Sport_Accessories.Models
 
         public Favourite() //empty constructor for EFCore
         {
-            
+            this.UpdatedAt = DateTime.Now;
+            this.LastModified_20118018 = DateTime.Now;
         }
 
         public Favourite(string user_id)
